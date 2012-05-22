@@ -1,3 +1,15 @@
+--	(c) 2012 d18c7db(a)hotmail
+--
+--	This program is free software; you can redistribute it and/or modify it under
+--	the terms of the GNU General Public License version 3 or, at your option,
+--	any later version as published by the Free Software Foundation.
+--
+--	This program is distributed in the hope that it will be useful,
+--	but WITHOUT ANY WARRANTY; without even the implied warranty of
+--	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+--
+-- For full details, see the GNU General Public License at www.gnu.org/licenses
+
 -------------------------------------------------------------------------------------------
 -- H_CNT[0],H_CNT[1],H_CNT[2],H_CNT[3],H_CNT[4],H_CNT[5],H_CNT[6],H_CNT[7],H_CNT[8],H_CNT[9]
 --   1/2 H     1 H     2 H      4H       8H       16 H     32H      64 H     128 H   256 H
