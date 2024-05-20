@@ -27,12 +27,14 @@ entity dkong_pduo is
 		FLASH_SO		: in		std_logic := '0';						-- Serial input from FLASH chip SO pin
 
 		-- SRAM
-		SRAM_A		: out		std_logic_vector(17 downto 0);	-- SRAM address bus
-		SRAM_D		: inout	std_logic_vector(15 downto 0);	-- SRAM data bus
+--		SRAM_A		: out		std_logic_vector(17 downto 0);	-- SRAM address bus
+--		SRAM_D		: inout	std_logic_vector(15 downto 0);	-- SRAM data bus
+		SRAM_A		: out		std_logic_vector(18 downto 0);	-- SRAM address bus
+		SRAM_D		: inout	std_logic_vector(7 downto 0);	-- SRAM data bus
 		SRAM_nCS		: out		std_logic;								-- SRAM chip select active low
 		SRAM_nWE		: out		std_logic;								-- SRAM write enable active low
 		SRAM_nOE		: out		std_logic;								-- SRAM output enable active low
-		SRAM_nBE		: out		std_logic;								-- SRAM byte enables active low
+--		SRAM_nBE		: out		std_logic;								-- SRAM byte enables active low
 
 		-- ext VGA monitor
 		O_VIDEO_R	: out		std_logic_vector(3 downto 0);
@@ -64,6 +66,7 @@ architecture RTL of dkong_pduo is
 
 	-- bootstrap control of SRAM, these signals connect to SRAM when boostrap_done = '0'
 	signal bs_A					: std_logic_vector(17 downto 0) := (others => '0');
+--	signal bs_A					: std_logic_vector(18 downto 0) := (others => '0');
 	signal bs_Din				: std_logic_vector( 7 downto 0) := (others => '0');
 	signal bs_Dout				: std_logic_vector( 7 downto 0) := (others => '0');
 	signal bs_nCS				: std_logic := '1';
@@ -85,6 +88,7 @@ architecture RTL of dkong_pduo is
 
 	-- user control of SRAM, these signals connect to SRAM when boostrap_busy = '0'
 	signal user_A				: std_logic_vector(17 downto 0) := (others => '0');
+--	signal user_A				: std_logic_vector(18 downto 0) := (others => '0');
 	signal user_Din			: std_logic_vector( 7 downto 0) := (others => '0');
 	signal user_Dout			: std_logic_vector( 7 downto 0) := (others => '0');
 	signal user_nCS			: std_logic := '1';
@@ -114,13 +118,15 @@ begin
 ----------------------------------------------------------------------------
 
 	-- SRAM muxer, allows access to physical SRAM by either bootstrap or user
-	SRAM_D	<= x"00" & bs_Dout	when bootstrap_done = '0' and bs_nWE = '0'	else (others => 'Z'); -- no need for user write
-	SRAM_A	<= bs_A					when bootstrap_done = '0'							else user_A;
+-- SRAM_D	<= x"00" & bs_Dout	when bootstrap_done = '0' and bs_nWE = '0'	else (others => 'Z'); -- no need for user write
+	SRAM_D	<=         bs_Dout	when bootstrap_done = '0' and bs_nWE = '0'	else (others => 'Z'); -- no need for user write
+--	SRAM_A	<= bs_A					when bootstrap_done = '0'							else user_A;
+	SRAM_A	<= '0' & bs_A					when bootstrap_done = '0'							else '0' & user_A;
 	SRAM_nCS	<= bs_nCS				when bootstrap_done = '0'							else user_nCS;
 	SRAM_nWE	<= bs_nWE				when bootstrap_done = '0'							else user_nWE;
 	SRAM_nOE	<= bs_nOE				when bootstrap_done = '0'							else user_nOE;
 
-	SRAM_nBE	<= '0';						-- nUB and nLB tied together, SRAM always in 16 bit mode, grrr!
+--	SRAM_nBE	<= '0';						-- nUB and nLB tied together, SRAM always in 16 bit mode, grrr!
 	user_Din	<= SRAM_D( 7 downto 0);	-- anyone can read SRAM_D without contention but his provides some logical separation
 
 	-- clock DCM
