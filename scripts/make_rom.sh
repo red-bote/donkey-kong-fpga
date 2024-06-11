@@ -36,5 +36,5 @@ echo ---------- build PROM data ----------
 cat $ROMS/c_5et_g.bin $ROMS/c_5ct_g.bin $ROMS/c_5bt_g.bin $ROMS/c_5at_g.bin $ROMS/c_5at_g.bin $ROMS/c_5at_g.bin $ROMS/v_3pt.bin $ROMS/v_3pt.bin $ROMS/v_5h_b.bin $ROMS/v_5h_b.bin $ROMS/c_5at_g.bin $ROMS/c_5at_g.bin $ROMS/l_4m_b.bin $ROMS/l_4m_b.bin $ROMS/l_4n_b.bin $ROMS/l_4n_b.bin $ROMS/l_4r_b.bin $ROMS/l_4r_b.bin $ROMS/l_4s_b.bin $ROMS/l_4s_b.bin $ROMS/s_3i_b.bin $ROMS/s_3j_b.bin $ROMS/c-2k.bpr $ROMS/c-2j.bpr $ROMS/v-5e.bpr 0xd00.bin dk_wave.bin > dkong_rom.bin
 
 #rem ROM.vhd only used for simulation
-genrom.py dkong_rom.bin ../build/ROM.vhd
+python genrom.py dkong_rom.bin ../build/ROM.vhd
 

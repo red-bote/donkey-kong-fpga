@@ -21,9 +21,10 @@ ADDR       FILE          SIZE
 0D000   l_4s_b.bin     2048*8bit   OBJ-ROM (ROM_7F)
 0D800   NOT USE        2048*8bit
 0E000   s_3i_b.bin     2048*8bit   CPU_ROM(I8035)
-0E800   NOT USE        2048*8bit
-0F000   s_3j_b.bin     2048*8bit   CPU_ROM(I8035)
-0F800   NOT USE        2048*8bit
-10000   dk_wave.bin           ANALOG SOUND (WAV) DATA
+0E800   s_3j_b.bin     2048*8bit   CPU_ROM(I8035)
+0F000   c-2k.bpr        256*8bit   palette low  4 bits
+0F100   c-2j.bpr        256*8bit   palette high 4 bits
+0F200   v-5e.bpr        256*8bit   character color codes
+0F300   NOT USE        3328*8bit
+10000   dk_wave.bin                ANALOG SOUND (WAV) DATA
 20000
-30000
