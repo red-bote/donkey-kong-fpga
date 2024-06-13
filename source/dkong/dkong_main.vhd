@@ -27,13 +27,6 @@ entity dkong_main is
 		I_CLK_24576M	: in  std_logic;
 		I_RESETn			: in  std_logic;
 
-		-- ROM IF
-		O_ROM_AB			: out std_logic_vector(17 downto 0);
-		I_ROM_DB			: in  std_logic_vector( 7 downto 0);
-		O_ROM_CSn		: out std_logic;
-		O_ROM_OEn		: out std_logic;
-		O_ROM_WEn		: out std_logic;
-
 		-- INPORT SW IF
 		I_U1				: in  std_logic;
 		I_D1				: in  std_logic;
@@ -128,7 +121,7 @@ architecture RTL of dkong_main is
 	signal OBJ_ROM_A			: std_logic_vector(11 downto 0) := (others => '0');
 	signal R_AD					: std_logic_vector(12 downto 0) := (others => '0');
 	signal VID_ROM1_DO		: std_logic_vector( 7 downto 0) := (others => '0');
-	signal VID_ROM2_DO		: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal VID_ROM2_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal VID_ROM_A			: std_logic_vector(11 downto 0) := (others => '0');
 	signal WAV_ROM_A			: std_logic_vector(17 downto 0) := (others => '0');
 	signal WAV_ROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
@@ -152,7 +145,7 @@ architecture RTL of dkong_main is
 	signal W_SW1				: std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_SW2				: std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_SW3				: std_logic_vector( 7 downto 0) := (others => '0');
-	signal W_VC_A				: std_logic_vector(15 downto 0) := (others => '0');
+--	signal W_VC_A				: std_logic_vector(15 downto 0) := (others => '0');
 	signal W_VF_CNT			: std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_VRAM_COL			: std_logic_vector( 3 downto 0) := (others => '0');
 	signal W_VRAM_DAT			: std_logic_vector( 5 downto 0) := (others => '0');
@@ -167,6 +160,11 @@ architecture RTL of dkong_main is
 	signal rgb_in				: std_logic_vector(15 downto 0) := (others => '0');
 	signal rgb_out				: std_logic_vector(15 downto 0) := (others => '0');
 	signal sound_mix			: std_logic_vector( 8 downto 0) := (others => '0');
+        -- new signals for discrete data busses needed to eliminate SRAM
+	signal VID_ROM2_3N_DO			: std_logic_vector( 7 downto 0) := (others => '0');
+	signal SND_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
+	signal PAL_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
+	signal CHAR_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 
 begin
 	------- SW Interface --|---------------------------------------------------------
@@ -224,15 +222,11 @@ begin
 	O_SOUND_OUT_L	<= mix_sound;
 	O_SOUND_OUT_R	<= mix_sound;
 
-	O_ROM_CSn		<= '0';	-- SRAM always selected
-	O_ROM_OEn		<= '0';	-- SRAM output enabled
-	O_ROM_WEn		<= '1';	-- SRAM write enable inactive (we use it as ROM)
-
 	W_CNF_EN			<= '0' when (R_AD = conf_cnt + 1) else '1';
 	W_FLIPn			<= W_5H_Q(2);
 	W_2PSL			<= W_5H_Q(3);
 	rgb_in			<= x"00" & W_R & W_G & W_B;
-	W_VC_A			<= "111" & R_AD when W_CNF_EN = '1' else "0111" & VID_ROM_A;
+--	W_VC_A			<= "111" & R_AD when W_CNF_EN = '1' else "0111" & VID_ROM_A;
 	W_OBJ_AB			<= W_H_CNT(8) & (not W_H_CNT(8)) & W_H_CNT(7 downto 0);
 	W_VRAM_DAT		<= W_VRAM_COL & W_VRAM_VID;
 	sound_mix		<= '0' & WAV_ROM_DO + W_D_S_DAT;
@@ -266,15 +260,15 @@ begin
 			R_AD			<= (others => '0');
 			clk_d			<= (others => '0');
 			phase			<= (others => '0');
-			O_ROM_AB		<= (others => '0');
-			VID_ROM1_DO	<= (others => '0');
-			VID_ROM2_DO	<= (others => '0');
-			OBJ_ROM1_DO	<= (others => '0');
-			OBJ_ROM2_DO <= (others => '0');
-			OBJ_ROM3_DO	<= (others => '0');
-			OBJ_ROM4_DO	<= (others => '0');
-			WB_ROM_DO	<= (others => '0');
-			WAV_ROM_DO	<= (others => '0');
+--			O_ROM_AB		<= (others => '0');
+--			VID_ROM1_DO	<= (others => '0');
+--			VID_ROM2_DO	<= (others => '0');
+--			OBJ_ROM1_DO	<= (others => '0');
+--			OBJ_ROM2_DO <= (others => '0');
+--			OBJ_ROM3_DO	<= (others => '0');
+--			OBJ_ROM4_DO	<= (others => '0');
+--			WB_ROM_DO	<= (others => '0');
+--			WAV_ROM_DO	<= (others => '0');
 		elsif rising_edge(W_CLK_12288M) then
 			clk_d(0) <= W_H_CNT(1) and W_H_CNT(2) and W_H_CNT(3);
 			clk_d(1) <= clk_d(0);
@@ -286,30 +280,31 @@ begin
 			end if;
 
 			case phase is
-				when "0000" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
-									O_ROM_AB		<= WAV_ROM_A;						--  set WAVE SOUND ADDR
-				when "0001" =>	WAV_ROM_DO	<= I_ROM_DB;						-- read WAVE SOUND ADDR
-				when "0010" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
-				when "0011" =>	WB_ROM_DO	<= I_ROM_DB;			 			-- read PROG ROM
-									O_ROM_AB		<= "000110"	& VID_ROM_A;		--  set VID_ROM1  3P ADDR = 6xxxH
-				when "0100" =>	VID_ROM1_DO	<= I_ROM_DB;						-- read VID_ROM1  3P ADDR = 6xxxH
-									O_ROM_AB		<= "00"		& W_VC_A;			--  set VID_ROM2  3N ADDR = 7xxxH
-				when "0101" =>	VID_ROM2_DO	<= I_ROM_DB;						-- read VID_ROM2  3N ADDR = 7xxxH
-									O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
-				when "0110" =>	WB_ROM_DO	<= I_ROM_DB;			 			-- read PROG ROM
-				when "1000" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
-				when "1001" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
-									O_ROM_AB		<= "001010"	& OBJ_ROM_A;		--  set OBJ_ROM1  7C ADDR = AxxxH
-				when "1010" =>	OBJ_ROM1_DO	<= I_ROM_DB;						-- read OBJ_ROM1  7C ADDR = AxxxH
-									O_ROM_AB		<= "001011"	& OBJ_ROM_A;		--  set OBJ_ROM2  7D ADDR = BxxxH
-				when "1011" =>	OBJ_ROM2_DO	<= I_ROM_DB;						-- read OBJ_ROM2  7D ADDR = BxxxH
-									O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
-				when "1100" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
-									O_ROM_AB		<= "001100"	& OBJ_ROM_A;		--  set OBJ_ROM3  7E ADDR = CxxxH
-				when "1101" =>	OBJ_ROM3_DO	<= I_ROM_DB;						-- read OBJ_ROM3  7E ADDR = CxxxH
-									O_ROM_AB		<= "001101"	& OBJ_ROM_A;		--  set OBJ_ROM4  7F ADDR = DxxxH
-				when "1110" =>	OBJ_ROM4_DO <= I_ROM_DB;						-- read OBJ_ROM4  7F ADDR = DxxxH
-				when "1111" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
+--				when "0000" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
+--									O_ROM_AB		<= WAV_ROM_A;						--  set WAVE SOUND ADDR
+--				when "0001" =>	WAV_ROM_DO	<= I_ROM_DB;						-- read WAVE SOUND ADDR
+--				when "0010" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
+--				when "0011" =>	WB_ROM_DO	<= I_ROM_DB;			 			-- read PROG ROM
+--									O_ROM_AB		<= "000110"	& VID_ROM_A;		--  set VID_ROM1  3P ADDR = 6xxxH
+--				when "0100" =>	VID_ROM1_DO	<= I_ROM_DB;						-- read VID_ROM1  3P ADDR = 6xxxH
+--									O_ROM_AB		<= "00"		& W_VC_A;			--  set VID_ROM2  3N ADDR = 7xxxH
+--				when "0101" =>	VID_ROM2_DO	<= I_ROM_DB;						-- read VID_ROM2  3N ADDR = 7xxxH
+--									O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
+--				when "0110" =>	WB_ROM_DO	<= I_ROM_DB;			 			-- read PROG ROM
+--				when "1000" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
+--				when "1001" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
+--									O_ROM_AB		<= "001010"	& OBJ_ROM_A;		--  set OBJ_ROM1  7C ADDR = AxxxH
+--				when "1010" =>	OBJ_ROM1_DO	<= I_ROM_DB;						-- read OBJ_ROM1  7C ADDR = AxxxH
+--									O_ROM_AB		<= "001011"	& OBJ_ROM_A;		--  set OBJ_ROM2  7D ADDR = BxxxH
+--				when "1011" =>	OBJ_ROM2_DO	<= I_ROM_DB;						-- read OBJ_ROM2  7D ADDR = BxxxH
+--									O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
+--				when "1100" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
+--									O_ROM_AB		<= "001100"	& OBJ_ROM_A;		--  set OBJ_ROM3  7E ADDR = CxxxH
+--				when "1101" =>	OBJ_ROM3_DO	<= I_ROM_DB;						-- read OBJ_ROM3  7E ADDR = CxxxH
+--									O_ROM_AB		<= "001101"	& OBJ_ROM_A;		--  set OBJ_ROM4  7F ADDR = DxxxH
+--				when "1110" =>	OBJ_ROM4_DO <= I_ROM_DB;						-- read OBJ_ROM4  7F ADDR = DxxxH
+
+				when "1111" =>	--O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
 					if W_CNF_EN = '1' then
 						R_AD <=  R_AD + 1;
 					end if;
@@ -317,6 +312,88 @@ begin
 			end case;
 		end if;
 	end process;
+
+
+  u_cpu_rom : entity work.CPU_ROM
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => W_CPU_A(13 downto 0),
+    DATA        => WB_ROM_DO
+    );
+
+  u_obj_rom1 : entity work.OBJ_ROM_1
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => OBJ_ROM_A(10 downto 0),
+    DATA        => OBJ_ROM1_DO
+    );
+
+  u_obj_rom2 : entity work.OBJ_ROM_2
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => OBJ_ROM_A(10 downto 0),
+    DATA        => OBJ_ROM2_DO
+    );
+
+  u_obj_rom3 : entity work.OBJ_ROM_3
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => OBJ_ROM_A(10 downto 0),
+    DATA        => OBJ_ROM3_DO
+    );
+
+  u_obj_rom4 : entity work.OBJ_ROM_4
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => OBJ_ROM_A(10 downto 0),
+    DATA        => OBJ_ROM4_DO
+    );
+
+  u_vid1_rom: entity work.VID_ROM_1
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => VID_ROM_A(10 downto 0),
+    DATA        => VID_ROM1_DO
+    );
+
+  u_vid2_rom: entity work.VID_ROM_2
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => VID_ROM_A(10 downto 0), -- W_VC_A(10 downto 0),
+    DATA        => VID_ROM2_3N_DO
+    );
+
+  u_snd_rom: entity work.SND_PROM
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => R_AD(11 downto 0), -- W_VC_A(11 downto 0),
+    DATA        => SND_PROM_DO
+    );
+
+  u_pal_rom: entity work.PAL_PROM
+  port  map(
+    CLK         => I_CLK_24576M,
+    ENA         => W_CLK_12288M,
+    ADDR        => R_AD(8 downto 0),
+    DATA        => PAL_PROM_DO
+    );
+
+  -- Changed to combinatorial, tiles glitch if registered!
+  u_char_rom: entity work.CHAR_PROM
+  port  map(
+--    CLK         => I_CLK_24576M,
+--    ENA         => W_CLK_12288M,
+    ADDR        => R_AD(7 downto 0),
+    DATA        => CHAR_PROM_DO
+    );
 
 	-- Z80IP interface
 	cpu : entity work.T80as
@@ -463,10 +540,10 @@ begin
 		I_CMPBLK			=> W_C_BLANKn,
 		O_VRAM_AB		=> VID_ROM_A,
 		I_VRAM_D1		=> VID_ROM1_DO,
-		I_VRAM_D2		=> VID_ROM2_DO,
+		I_VRAM_D2		=> VID_ROM2_3N_DO,
 		I_CNF_EN			=> W_CNF_EN,
 		I_CNF_A			=> R_AD(7 downto 0),
-		I_CNF_D			=> VID_ROM2_DO,
+		I_CNF_D			=> CHAR_PROM_DO,
 		I_WE4				=> W_W4_WE,
 		--  Debug output
 		O_DB				=> W_VRAM_DB,
@@ -488,7 +565,7 @@ begin
 		I_5H_Q6			=> W_5H_Q(6),
 		I_5H_Q7			=> W_5H_Q(7),
 		I_CNF_A			=> R_AD(7 downto 0),
-		I_CNF_D			=> VID_ROM2_DO,
+		I_CNF_D			=> PAL_PROM_DO,
 		I_CNF_EN			=> W_CNF_EN,
 		I_WE2				=> W_W2_WE,
 		I_WE3				=> W_W3_WE,
@@ -552,7 +629,7 @@ begin
 		I8035_T1			=> I8035_T1,
 
 		I_CNF_A			=> R_AD(10 downto 0),
-		I_CNF_D			=> VID_ROM2_DO,
+		I_CNF_D			=> SND_PROM_DO,
 		I_WE0				=> W_W0_WE,
 		I_WE1				=> W_W1_WE,
 		I_CNF_EN			=> W_CNF_EN,
@@ -565,12 +642,19 @@ begin
 	analog_sound : entity work.dkong_wav_sound
 	port map (
 		O_ROM_AB			=> WAV_ROM_A,
-		I_ROM_DB			=> WAV_ROM_DO,
+		I_ROM_DB			=> (others => '0'),
 
 		I_CLK				=> I_CLK_24576M,
 		I_RSTn			=> I_RESETn,
 		I_SW				=> W_6H_Q(2 downto 0)
 	);
+
+    u_wav_rom: entity work.dkwav_rom
+    Port map (
+        i_clk => I_CLK_24576M,
+        i_addr => WAV_ROM_A(15 downto 0),
+        o_data => WAV_ROM_DO
+    );
 
 	-- D-A convertor
 	wav_dac : entity work.dac
