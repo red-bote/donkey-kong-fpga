@@ -34,6 +34,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity rtl_top is
     Port ( clk : in STD_LOGIC;
            sw : in STD_LOGIC_VECTOR (15 downto 0);
+           JA : in STD_LOGIC_VECTOR(4 downto 0);
 
            O_PMODAMP2_AIN : out STD_LOGIC;
            O_PMODAMP2_GAIN : out STD_LOGIC;
@@ -62,11 +63,24 @@ begin
     -- gain pin is driven high there is a 6 dB gain, low is a 12 dB gain 
     O_PMODAMP2_GAIN <= sw(15);
 
-    inp_switches(0) <= btnL;
-    inp_switches(1) <= btnU;
-    inp_switches(2) <= btnD;
-    inp_switches(3) <= btnR;
-    inp_switches(4) <= btnC;
+--    inp_switches(0) <= btnL;
+--    inp_switches(1) <= btnU;
+--    inp_switches(2) <= btnD;
+--    inp_switches(3) <= btnR;
+--    inp_switches(4) <= btnC;
+
+--    inp_switches(0) <= not JA(1); -- L
+--    inp_switches(1) <= not JA(3); -- U
+--    inp_switches(2) <= not JA(2); -- D
+--    inp_switches(3) <= not JA(0); -- R
+--    inp_switches(4) <= not JA(4);
+
+    inp_switches(0) <= btnL or not JA(1); -- L
+    inp_switches(1) <= btnU or not JA(3); -- U
+    inp_switches(2) <= btnD or not JA(2); -- D
+    inp_switches(3) <= btnR or not JA(0); -- R
+    inp_switches(4) <= btnC or not JA(4);
+
 
     u_dkong_top : entity work.dkong_basys3
 	port map(
