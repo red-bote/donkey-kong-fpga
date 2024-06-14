@@ -39,7 +39,7 @@ JUMP+RIGHT = 2 PLAYER GAME
 
 ```
 
-I built an adapter for a (compatible classic game controller)[https://www.amazon.com/dp/B07J1PT5JQ?psc=1&ref=ppx_yo2ov_dt_b_product_details] on a spare PMOD port. It's basically a plug for the 9-pin d-sub game controller connector with pullup resistors on the 5 input ports. The following list are suggested parts:
+I built an adapter for a [compatible classic game controller](https://www.amazon.com/dp/B07J1PT5JQ?psc=1&ref=ppx_yo2ov_dt_b_product_details) on a spare PMOD port. It's basically a plug for the 9-pin d-sub game controller connector with pullup resistors on the 5 input ports. The following list are suggested parts:
 
 * [9 Position D-Sub Plug, Male](https://www.digikey.com/en/products/detail/amphenol-cs-fci/DE09P064TXLF/1001838)
 * [Connector Header Through Hole, Right Angle 16 position 0.100" (2.54mm)](https://www.digikey.com/en/products/detail/adam-tech/PH2RA-16-UA/9830680)
