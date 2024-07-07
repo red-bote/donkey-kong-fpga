@@ -33,10 +33,10 @@ entity dkong_wav_sound is
 end dkong_wav_sound;
 
 architecture RTL of dkong_wav_sound is
-	constant Sample_cnt	: std_logic_vector(11 downto 0) :=       x"8b4"; -- 2228
+	constant Sample_cnt	: std_logic_vector(11 downto 0) :=       x"8b4"; -- 2228 (11025*2228=24.5637 Mhz)
 	constant Walk_cnt		: std_logic_vector(12 downto 0) := '0' & x"7d5";
 	constant Jump_cnt		: std_logic_vector(12 downto 0) := '1' & x"e29";
-	constant Foot_cnt		: std_logic_vector(12 downto 0) := '1' & x"74e";
+	constant Foot_cnt		: std_logic_vector(12 downto 0) := '1' & x"74e"; -- 0x06A0 
 
 	signal sample_pls		: std_logic := '0';
 	signal sample			: std_logic_vector(11 downto 0) := (others => '0');

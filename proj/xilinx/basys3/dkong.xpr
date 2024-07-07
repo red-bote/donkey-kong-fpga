@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="54" Path="/home/xubuntu/hdl/donkey-kong-fpga/proj/xilinx/basys3/dkong.xpr">
+<Project Version="7" Minor="54" Path="/media/sf_umlaut/wuzupcrud/hdl/donkey-kong-verilog/proj/xilinx/basys3/dkong.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="d57bc8bfb66e4b72a36b9f42dfa06505"/>
@@ -36,7 +36,7 @@
     <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
-    <Option Name="IPOutputRepo" Val="$PCACHEDIR/ip"/>
+    <Option Name="IPOutputRepo" Val="/vivado_paths_are_foobarred_sometimes/donkey-kong-fpga/proj/xilinx/basys3/dkong.cache/ip"/>
     <Option Name="IPDefaultOutputPath" Val="$PGENDIR/sources_1"/>
     <Option Name="IPCachePermission" Val="read"/>
     <Option Name="IPCachePermission" Val="write"/>
@@ -464,7 +464,7 @@
       <Filter Type="Constrs"/>
       <File Path="$PSRCDIR/constrs_1/imports/digilent-xdc-master/Basys-3-Master.xdc">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/digilent-xdc-master/Basys-3-Master.xdc"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/vivado_paths_are_foobarred_sometimes/home/xubuntu/tmp/digilent-xdc-master/Basys-3-Master.xdc"/>
           <Attr Name="ImportTime" Val="1669143946"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
