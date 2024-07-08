@@ -402,12 +402,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../source/dkong/dkong_sound.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../../../build/wav_snd_0.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
