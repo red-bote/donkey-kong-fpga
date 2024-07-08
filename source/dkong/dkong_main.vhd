@@ -235,6 +235,55 @@ architecture RTL of dkong_main is
 	);
 	end component;
 
+--	component dkong_col_pal
+--	port(
+--		CLK_6M		: in  std_logic;
+--		CLK_12M		: in  std_logic;
+--		I_VRAM_D		: in  std_logic_vector( 5 downto 0);
+--		I_OBJ_D		: in  std_logic_vector( 5 downto 0);
+--		I_CMPBLKn	: in  std_logic;
+--		I_5H_Q6		: in  std_logic;
+--		I_5H_Q7		: in  std_logic;
+--		I_CNF_A		: in  std_logic_vector( 7 downto 0);
+--		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+--		I_CNF_EN		: in  std_logic;
+--		I_WE2			: in  std_logic;
+--		I_WE3			: in  std_logic;
+--		O_R			: out std_logic_vector( 2 downto 0);
+--		O_G			: out std_logic_vector( 2 downto 0);
+--		O_B			: out std_logic_vector( 1 downto 0)
+--	);
+--	end component;
+
+    component dkong_vram is
+	port(
+		CLK_12M		: in  std_logic;
+		I_AB			: in  std_logic_vector( 9 downto 0);
+		I_DB			: in  std_logic_vector( 7 downto 0);
+		I_VRAM_WRn	: in  std_logic;
+		I_VRAM_RDn	: in  std_logic;
+		I_FLIP		: in  std_logic;
+		I_H_CNT		: in  std_logic_vector( 9 downto 0);
+		I_VF_CNT		: in  std_logic_vector( 7 downto 0);
+		I_CMPBLK		: in  std_logic;
+		O_VRAM_AB	: out std_logic_vector(11 downto 0);
+		I_VRAM_D1	: in  std_logic_vector( 7 downto 0);
+		I_VRAM_D2	: in  std_logic_vector( 7 downto 0);
+		I_CNF_EN		: in  std_logic;
+		I_CNF_A		: in  std_logic_vector( 7 downto 0);
+		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+		I_WE4			: in  std_logic;
+		---- Debug ----
+		---------------
+		O_DB			: out std_logic_vector( 7 downto 0);
+		O_COL			: out std_logic_vector( 3 downto 0);
+		O_VID			: out std_logic_vector( 1 downto 0);
+		O_VRAMBUSYn	: out std_logic;
+		O_ESBLKn		: out std_logic
+	);
+    end component;
+
+
 begin
 	------- SW Interface --|---------------------------------------------------------
 	--                     |  B7     B6     B5     B4     B3     B2     B1     B0
@@ -611,7 +660,8 @@ begin
 	);
 
 	-- V-RAM (VIDEO)
-	vram : entity work.dkong_vram
+--	vram : entity work.dkong_vram
+	vram : dkong_vram -- entity work.dkong_vram
 	port map (
 		-- input
 		CLK_12M			=> not W_CLK_12288M,
