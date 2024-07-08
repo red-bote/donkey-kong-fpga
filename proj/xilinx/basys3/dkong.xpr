@@ -102,6 +102,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/imports/dkong/dkong_hv_count.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../original_source/fpga_dkong_v400/dkong_prj/src/dkong/dkong_hv_count.v"/>
+          <Attr Name="ImportTime" Val="1107860400"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/imports/dkong/dkong_logic.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../../../original_source/fpga_dkong_v400/dkong_prj/src/dkong/dkong_logic.v"/>
@@ -313,12 +322,6 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../../source/dkong/dkong_rams.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../../source/dkong/dkong_hv_count.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>

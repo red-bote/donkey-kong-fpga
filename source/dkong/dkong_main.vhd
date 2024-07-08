@@ -204,6 +204,7 @@ architecture RTL of dkong_main is
 		O_3D_Q			: out std_logic_vector( 3 downto 0)    -- sound
 	);
 	end component;
+
     -- using dkong_wav_sound.v from original Verilog source
 	component dkong_wav_sound
 	port(
@@ -213,6 +214,24 @@ architecture RTL of dkong_main is
 		I_CLK		: in std_logic;
 		I_RSTn	: in std_logic;
 		I_SW		: in std_logic_vector( 2 downto 0)
+	);
+	end component;
+
+	component dkong_hv_count
+	port(
+		I_CLK		: in  std_logic;
+		RST_n		: in  std_logic;
+		V_FLIP	: in  std_logic;
+		-- output
+		O_CLK		: out std_logic;
+		H_CNT		: out std_logic_vector( 9 downto 0);
+		V_CNT		: out std_logic_vector( 7 downto 0);
+		VF_CNT	: out std_logic_vector( 7 downto 0);
+		H_BLANKn	: out std_logic;
+		V_BLANKn	: out std_logic;
+		C_BLANKn	: out std_logic;
+		H_SYNCn	: out std_logic;
+		V_SYNCn	: out std_logic
 	);
 	end component;
 
@@ -549,7 +568,8 @@ begin
 	);
 
 	-- H & V Counter
-	hv : entity work.dkong_hv_count_n
+--	hv : entity work.dkong_hv_count_n
+	hv : dkong_hv_count
 	port map (
 		-- input
 		I_CLK				=> I_CLK_24576M,
