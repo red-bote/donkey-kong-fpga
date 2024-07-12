@@ -463,12 +463,19 @@ begin
 	end process;
 
 
-  u_cpu_rom : entity work.CPU_ROM
+--  u_cpu_rom : entity work.CPU_ROM
+--  port  map(
+--    CLK         => I_CLK_24576M,
+--    ENA         => W_CLK_12288M,
+--    ADDR        => W_CPU_A(13 downto 0),
+--    DATA        => WB_ROM_DO
+--    );
+  u_cpu_rom : entity work.program_rom
   port  map(
-    CLK         => I_CLK_24576M,
-    ENA         => W_CLK_12288M,
-    ADDR        => W_CPU_A(13 downto 0),
-    DATA        => WB_ROM_DO
+    i_clk       => I_CLK_24576M,
+    i_en        => W_CLK_12288M,
+    i_addr      => W_CPU_A,
+    o_data      => WB_ROM_DO
     );
 
   u_obj_rom1 : entity work.OBJ_ROM_1
@@ -503,19 +510,20 @@ begin
     DATA        => OBJ_ROM4_DO
     );
 
+  -- allow 4096 byte ROM for DKjr
   u_vid1_rom: entity work.VID_ROM_1
   port  map(
     CLK         => I_CLK_24576M,
     ENA         => W_CLK_12288M,
-    ADDR        => VID_ROM_A(10 downto 0),
+    ADDR        => VID_ROM_A(11 downto 0),
     DATA        => VID_ROM1_DO
     );
-
+  -- allow 4096 byte ROM for DKjr
   u_vid2_rom: entity work.VID_ROM_2
   port  map(
     CLK         => I_CLK_24576M,
     ENA         => W_CLK_12288M,
-    ADDR        => VID_ROM_A(10 downto 0), -- W_VC_A(10 downto 0),
+    ADDR        => VID_ROM_A(11 downto 0), -- W_VC_A(10 downto 0),
     DATA        => VID_ROM2_3N_DO
     );
 
