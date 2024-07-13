@@ -39,11 +39,11 @@ entity dkong_sound is
 		I8035_T0		: out std_logic;
 		I8035_T1		: out std_logic;
 
-		I_CNF_A		: in  std_logic_vector(10 downto 0);
-		I_CNF_D		: in  std_logic_vector( 7 downto 0);
-		I_WE0			: in  std_logic;
-		I_WE1			: in  std_logic;
-		I_CNF_EN		: in  std_logic;
+--		I_CNF_A		: in  std_logic_vector(10 downto 0);
+--		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+--		I_WE0			: in  std_logic;
+--		I_WE1			: in  std_logic;
+--		I_CNF_EN		: in  std_logic;
 
 		I_SOUND_DAT	: in  std_logic_vector( 3 downto 0);
 		I_SOUND_CNT	: in  std_logic_vector( 3 downto 0);
@@ -57,8 +57,8 @@ architecture RTL of dkong_sound is
 	signal S_ROM_A		: std_logic_vector(10 downto 0) := (others => '0');
 	signal L_ROM_A		: std_logic_vector( 7 downto 0) := (others => '0');
 
-	signal ROM_A		: std_logic_vector(10 downto 0) := (others => '0');
-	signal ROM_D		: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal ROM_A		: std_logic_vector(10 downto 0) := (others => '0');
+--	signal ROM_D		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal S_PROG_DB	: std_logic_vector( 7 downto 0) := (others => '0');
 	signal S_PROG_D	: std_logic_vector( 7 downto 0) := (others => '0');
 
@@ -74,7 +74,7 @@ begin
 	I8035_T1			<= not I_SOUND_CNT(2);
 	I8035_PBO(5)	<= not I_SOUND_CNT(1);
 	I8035_INTn		<= not I_SOUND_CNT(0);
-	I8035_RSTn		<= I_RST and (not I_CNF_EN);
+	I8035_RSTn		<= I_RST; --  and (not I_CNF_EN);
 
 	I8035_PBO(4 downto 0)	<= "00000";
 	I8035_PBO(7 downto 6)	<= "00";
@@ -99,34 +99,50 @@ begin
 	end process;
 
 	----  PROG ROM 3H ---------------------------
-	ROM_A		<= I_CNF_A when I_CNF_EN = '1' else S_ROM_A;
-	ROM_D		<= I_CNF_D when I_CNF_EN = '1' else (others => '0');
+--	ROM_A		<= I_CNF_A when I_CNF_EN = '1' else S_ROM_A;
+--	ROM_D		<= I_CNF_D when I_CNF_EN = '1' else (others => '0');
 	S_PROG_D	<= x"00" when I8035_PSENn = '1' else S_PROG_DB;
 
-	sound_prog : entity work.ram_2048_8
+--	sound_prog : entity work.ram_2048_8
+--	port map (
+
+--		I_CLK		=> I_CLK1,
+--		I_ADDR	=> ROM_A,
+--		I_D		=> ROM_D,
+--		I_CE		=> '1',
+--		I_WE		=> I_WE0,
+--		O_D		=> S_PROG_DB
+--	);
+	sound_prog : entity work.SND_PROG_ROM
 	port map (
 
-		I_CLK		=> I_CLK1,
-		I_ADDR	=> ROM_A,
-		I_D		=> ROM_D,
-		I_CE		=> '1',
-		I_WE		=> I_WE0,
-		O_D		=> S_PROG_DB
+		CLK  => I_CLK1,
+		ADDR => S_ROM_A,
+		ENA  => '1',
+		DATA => S_PROG_DB
 	);
 
 	----  DATA ROM 3H ---------------------------
 	S_D2_CS	<= (not I8035_PBI(6)) and (not I8035_RDn);
 	S_D2		<= S_DB2  when S_D2_CS = '1' else (others => '0');
 
-	sound_data : entity work.ram_2048_8
+--	sound_data : entity work.ram_2048_8
+--	port map (
+
+--		I_CLK		=> I_CLK1,
+--		I_ADDR	=> ROM_A,
+--		I_D		=> ROM_D,
+--		I_CE		=> '1',
+--		I_WE		=> I_WE1,
+--		O_D		=> S_DB2
+--	);
+	sound_data : entity work.SND_DATA_ROM
 	port map (
 
-		I_CLK		=> I_CLK1,
-		I_ADDR	=> ROM_A,
-		I_D		=> ROM_D,
-		I_CE		=> '1',
-		I_WE		=> I_WE1,
-		O_D		=> S_DB2
+		CLK  => I_CLK1,
+		ADDR => S_ROM_A,
+		ENA  => '1',
+		DATA => S_DB2
 	);
 
 	----  I8035_DB IO I/F -----------------------

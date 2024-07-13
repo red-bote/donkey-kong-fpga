@@ -102,8 +102,8 @@ architecture RTL of dkong_main is
 	signal W_VRAM_WRn			: std_logic := '1';
 	signal W_V_BLANKn			: std_logic := '1';
 	signal W_V_SYNCn			: std_logic := '1';
-	signal W_W0_WE				: std_logic := '0';
-	signal W_W1_WE				: std_logic := '0';
+--	signal W_W0_WE				: std_logic := '0';
+--	signal W_W1_WE				: std_logic := '0';
 	signal W_W2_WE				: std_logic := '0';
 	signal W_W3_WE				: std_logic := '0';
 	signal W_W4_WE				: std_logic := '0';
@@ -232,8 +232,8 @@ begin
 	sound_mix		<= '0' & WAV_ROM_DO + W_D_S_DAT;
 
 	-- address decoder
-	W_W0_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto 11) = "00"   ) else '0'; --  sound 0
-	W_W1_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto 11) = "01"   ) else '0'; --  sound 1
+--	W_W0_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto 11) = "00"   ) else '0'; --  sound 0
+--	W_W1_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto 11) = "01"   ) else '0'; --  sound 1
 	W_W2_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10000") else '0'; --  col 0
 	W_W3_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10001") else '0'; --  col 1
 	W_W4_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10010") else '0'; --  vram 0
@@ -370,13 +370,13 @@ begin
     DATA        => VID_ROM2_3N_DO
     );
 
-  u_snd_rom: entity work.SND_PROM
-  port  map(
-    CLK         => I_CLK_24576M,
-    ENA         => W_CLK_12288M,
-    ADDR        => R_AD(11 downto 0), -- W_VC_A(11 downto 0),
-    DATA        => SND_PROM_DO
-    );
+--  u_snd_rom: entity work.SND_PROM
+--  port  map(
+--    CLK         => I_CLK_24576M,
+--    ENA         => W_CLK_12288M,
+--    ADDR        => R_AD(11 downto 0), -- W_VC_A(11 downto 0),
+--    DATA        => SND_PROM_DO
+--    );
 
   u_pal_rom: entity work.PAL_PROM
   port  map(
@@ -628,11 +628,11 @@ begin
 		I8035_T0			=> I8035_T0,
 		I8035_T1			=> I8035_T1,
 
-		I_CNF_A			=> R_AD(10 downto 0),
-		I_CNF_D			=> SND_PROM_DO,
-		I_WE0				=> W_W0_WE,
-		I_WE1				=> W_W1_WE,
-		I_CNF_EN			=> W_CNF_EN,
+--		I_CNF_A			=> R_AD(10 downto 0),
+--		I_CNF_D			=> SND_PROM_DO,
+--		I_WE0				=> W_W0_WE,
+--		I_WE1				=> W_W1_WE,
+--		I_CNF_EN			=> W_CNF_EN,
 
 		I_SOUND_DAT		=> W_3D_Q,
 		I_SOUND_CNT		=> W_SOUND_CNT,
