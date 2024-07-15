@@ -58,7 +58,7 @@ entity dkong_main is
 end dkong_main;
 
 architecture RTL of dkong_main is
-	constant conf_cnt		: std_logic_vector(12 downto 0) := "1001011111111";	-- x12FF
+--	constant conf_cnt		: std_logic_vector(12 downto 0) := "1001011111111";	-- x12FF
 
 	signal I8035_ALE			: std_logic := '0';
 	signal I8035_INTn			: std_logic := '1';
@@ -72,7 +72,7 @@ architecture RTL of dkong_main is
 	signal WB_CLK_06144M		: std_logic := '0';
 	signal WB_CLK_12288M		: std_logic := '0';
 	signal W_CLK_12288M		: std_logic := '0';
-	signal W_CNF_EN			: std_logic := '0';
+--	signal W_CNF_EN			: std_logic := '0';
 	signal W_CPU_BUSRQn		: std_logic := '1';
 	signal W_CPU_M1n			: std_logic := '1';
 	signal W_CPU_MREQn		: std_logic := '1';
@@ -104,9 +104,9 @@ architecture RTL of dkong_main is
 	signal W_V_SYNCn			: std_logic := '1';
 --	signal W_W0_WE				: std_logic := '0';
 --	signal W_W1_WE				: std_logic := '0';
-	signal W_W2_WE				: std_logic := '0';
-	signal W_W3_WE				: std_logic := '0';
-	signal W_W4_WE				: std_logic := '0';
+--	signal W_W2_WE				: std_logic := '0';
+--	signal W_W3_WE				: std_logic := '0';
+--	signal W_W4_WE				: std_logic := '0';
 	signal mix_sound			: std_logic := '0';
 
 	signal I8035_DBI			: std_logic_vector( 7 downto 0) := (others => '0');
@@ -119,7 +119,7 @@ architecture RTL of dkong_main is
 	signal OBJ_ROM3_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal OBJ_ROM4_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal OBJ_ROM_A			: std_logic_vector(11 downto 0) := (others => '0');
-	signal R_AD					: std_logic_vector(12 downto 0) := (others => '0');
+--	signal R_AD					: std_logic_vector(12 downto 0) := (others => '0');
 	signal VID_ROM1_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 --	signal VID_ROM2_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal VID_ROM_A			: std_logic_vector(11 downto 0) := (others => '0');
@@ -154,17 +154,17 @@ architecture RTL of dkong_main is
 	signal W_SOUND_CNT		: std_logic_vector( 3 downto 0) := (others => '0');
 	signal W_CPU_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_CPU_DI			: std_logic_vector( 7 downto 0) := (others => '0');
-	signal clk_d				: std_logic_vector( 1 downto 0) := (others => '0');
+--	signal clk_d				: std_logic_vector( 1 downto 0) := (others => '0');
 	signal dac_di				: std_logic_vector( 8 downto 0) := (others => '0');
-	signal phase				: std_logic_vector( 3 downto 0) := (others => '0');
+--	signal phase				: std_logic_vector( 3 downto 0) := (others => '0');
 	signal rgb_in				: std_logic_vector(15 downto 0) := (others => '0');
 	signal rgb_out				: std_logic_vector(15 downto 0) := (others => '0');
 	signal sound_mix			: std_logic_vector( 8 downto 0) := (others => '0');
         -- new signals for discrete data busses needed to eliminate SRAM
 	signal VID_ROM2_3N_DO			: std_logic_vector( 7 downto 0) := (others => '0');
-	signal SND_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
-	signal PAL_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
-	signal CHAR_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal SND_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal PAL_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal CHAR_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 
 begin
 	------- SW Interface --|---------------------------------------------------------
@@ -222,7 +222,7 @@ begin
 	O_SOUND_OUT_L	<= mix_sound;
 	O_SOUND_OUT_R	<= mix_sound;
 
-	W_CNF_EN			<= '0' when (R_AD = conf_cnt + 1) else '1';
+--	W_CNF_EN			<= '0' when (R_AD = conf_cnt + 1) else '1';
 	W_FLIPn			<= W_5H_Q(2);
 	W_2PSL			<= W_5H_Q(3);
 	rgb_in			<= x"00" & W_R & W_G & W_B;
@@ -234,9 +234,9 @@ begin
 	-- address decoder
 --	W_W0_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto 11) = "00"   ) else '0'; --  sound 0
 --	W_W1_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto 11) = "01"   ) else '0'; --  sound 1
-	W_W2_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10000") else '0'; --  col 0
-	W_W3_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10001") else '0'; --  col 1
-	W_W4_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10010") else '0'; --  vram 0
+--	W_W2_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10000") else '0'; --  col 0
+--	W_W3_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10001") else '0'; --  col 1
+--	W_W4_WE			<= '1' when W_CNF_EN = '1' and (R_AD(12 downto  8) = "10010") else '0'; --  vram 0
 
 	W_SOUND_CNT		<= W_6H_Q(5 downto 3) & W_5H_Q(0);
 
@@ -254,12 +254,12 @@ begin
 		end if;
 	end process;
 
-	ext_rom_mux : process(W_CLK_12288M, I_RESETn)
-	begin
-		if (I_RESETn = '0') then
-			R_AD			<= (others => '0');
-			clk_d			<= (others => '0');
-			phase			<= (others => '0');
+--	ext_rom_mux : process(W_CLK_12288M, I_RESETn)
+--	begin
+--		if (I_RESETn = '0') then
+--			R_AD			<= (others => '0');
+--			clk_d			<= (others => '0');
+--			phase			<= (others => '0');
 --			O_ROM_AB		<= (others => '0');
 --			VID_ROM1_DO	<= (others => '0');
 --			VID_ROM2_DO	<= (others => '0');
@@ -269,17 +269,17 @@ begin
 --			OBJ_ROM4_DO	<= (others => '0');
 --			WB_ROM_DO	<= (others => '0');
 --			WAV_ROM_DO	<= (others => '0');
-		elsif rising_edge(W_CLK_12288M) then
-			clk_d(0) <= W_H_CNT(1) and W_H_CNT(2) and W_H_CNT(3);
-			clk_d(1) <= clk_d(0);
-
-			if clk_d(1 downto 0) = "01" then
-				phase <= (others => '0');
-			else
-				phase <= phase + 1;
-			end if;
-
-			case phase is
+--		elsif rising_edge(W_CLK_12288M) then
+--			clk_d(0) <= W_H_CNT(1) and W_H_CNT(2) and W_H_CNT(3);
+--			clk_d(1) <= clk_d(0);
+--
+--			if clk_d(1 downto 0) = "01" then
+--				phase <= (others => '0');
+--			else
+--				phase <= phase + 1;
+--			end if;
+--
+--			case phase is
 --				when "0000" =>	WB_ROM_DO	<= I_ROM_DB;						-- read PROG ROM
 --									O_ROM_AB		<= WAV_ROM_A;						--  set WAVE SOUND ADDR
 --				when "0001" =>	WAV_ROM_DO	<= I_ROM_DB;						-- read WAVE SOUND ADDR
@@ -304,14 +304,14 @@ begin
 --									O_ROM_AB		<= "001101"	& OBJ_ROM_A;		--  set OBJ_ROM4  7F ADDR = DxxxH
 --				when "1110" =>	OBJ_ROM4_DO <= I_ROM_DB;						-- read OBJ_ROM4  7F ADDR = DxxxH
 
-				when "1111" =>	--O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
-					if W_CNF_EN = '1' then
-						R_AD <=  R_AD + 1;
-					end if;
-				when others => null;
-			end case;
-		end if;
-	end process;
+--				when "1111" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
+--					if W_CNF_EN = '1' then
+--						R_AD <=  R_AD + 1;
+--					end if;
+--				when others => null;
+--			end case;
+--		end if;
+--	end process;
 
 
   u_cpu_rom : entity work.CPU_ROM
@@ -378,22 +378,22 @@ begin
 --    DATA        => SND_PROM_DO
 --    );
 
-  u_pal_rom: entity work.PAL_PROM
-  port  map(
-    CLK         => I_CLK_24576M,
-    ENA         => W_CLK_12288M,
-    ADDR        => R_AD(8 downto 0),
-    DATA        => PAL_PROM_DO
-    );
-
-  -- Changed to combinatorial, tiles glitch if registered!
-  u_char_rom: entity work.CHAR_PROM
-  port  map(
+--  u_pal_rom: entity work.PAL_PROM
+--  port  map(
 --    CLK         => I_CLK_24576M,
 --    ENA         => W_CLK_12288M,
-    ADDR        => R_AD(7 downto 0),
-    DATA        => CHAR_PROM_DO
-    );
+--    ADDR        => R_AD(8 downto 0),
+--    DATA        => PAL_PROM_DO
+--    );
+
+--  -- Changed to combinatorial, tiles glitch if registered!
+--  u_char_rom: entity work.CHAR_PROM
+--  port  map(
+----    CLK         => I_CLK_24576M,
+----    ENA         => W_CLK_12288M,
+--    ADDR        => R_AD(7 downto 0),
+--    DATA        => CHAR_PROM_DO
+--    );
 
 	-- Z80IP interface
 	cpu : entity work.T80as
@@ -541,10 +541,10 @@ begin
 		O_VRAM_AB		=> VID_ROM_A,
 		I_VRAM_D1		=> VID_ROM1_DO,
 		I_VRAM_D2		=> VID_ROM2_3N_DO,
-		I_CNF_EN			=> W_CNF_EN,
-		I_CNF_A			=> R_AD(7 downto 0),
-		I_CNF_D			=> CHAR_PROM_DO,
-		I_WE4				=> W_W4_WE,
+--		I_CNF_EN			=> W_CNF_EN,
+--		I_CNF_A			=> R_AD(7 downto 0),
+--		I_CNF_D			=> CHAR_PROM_DO,
+--		I_WE4				=> W_W4_WE,
 		--  Debug output
 		O_DB				=> W_VRAM_DB,
 		O_COL				=> W_VRAM_COL,
@@ -558,17 +558,17 @@ begin
 	port map (
 		-- input
 		CLK_6M			=> W_H_CNT(0),
-		CLK_12M			=> W_CLK_12288M,
+--		CLK_12M			=> W_CLK_12288M,
 		I_VRAM_D			=> W_VRAM_DAT,
 		I_OBJ_D			=> W_OBJ_DAT,
 		I_CMPBLKn		=> W_L_CMPBLKn,
 		I_5H_Q6			=> W_5H_Q(6),
 		I_5H_Q7			=> W_5H_Q(7),
-		I_CNF_A			=> R_AD(7 downto 0),
-		I_CNF_D			=> PAL_PROM_DO,
-		I_CNF_EN			=> W_CNF_EN,
-		I_WE2				=> W_W2_WE,
-		I_WE3				=> W_W3_WE,
+--		I_CNF_A			=> R_AD(7 downto 0),
+--		I_CNF_D			=> PAL_PROM_DO,
+--		I_CNF_EN			=> W_CNF_EN,
+--		I_WE2				=> W_W2_WE,
+--		I_WE3				=> W_W3_WE,
 		-- output
 		O_R				=> W_R,
 		O_G				=> W_G,

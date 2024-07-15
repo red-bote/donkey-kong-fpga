@@ -45,10 +45,10 @@ entity dkong_vram is
 		O_VRAM_AB	: out std_logic_vector(11 downto 0);
 		I_VRAM_D1	: in  std_logic_vector( 7 downto 0);
 		I_VRAM_D2	: in  std_logic_vector( 7 downto 0);
-		I_CNF_EN		: in  std_logic;
-		I_CNF_A		: in  std_logic_vector( 7 downto 0);
-		I_CNF_D		: in  std_logic_vector( 7 downto 0);
-		I_WE4			: in  std_logic;
+--		I_CNF_EN		: in  std_logic;
+--		I_CNF_A		: in  std_logic_vector( 7 downto 0);
+--		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+--		I_WE4			: in  std_logic;
 		---- Debug ----
 		---------------
 		O_DB			: out std_logic_vector( 7 downto 0);
@@ -91,6 +91,7 @@ architecture RTL of dkong_vram is
 	signal I_4N			: std_logic_vector(7 downto 0) := (others => '0');
 	signal reg_4N		: std_logic_vector(7 downto 0) := (others => '0');
 
+	signal temp_vec8 : std_logic_vector(7 downto 0) := (others => '0');
 begin
 	---- Debug ----
 	---------------
@@ -123,19 +124,26 @@ begin
 	);
 
 	-----  ROM 2N  -----
-	W_2N_AD <= I_CNF_A             when I_CNF_EN = '1' else W_vram_AB(9 downto 7) & W_vram_AB(4 downto 0);
-	W_2N_DI <= I_CNF_D(3 downto 0) when I_CNF_EN = '1' else (others => '0');
+--	W_2N_AD <= I_CNF_A             when I_CNF_EN = '1' else W_vram_AB(9 downto 7) & W_vram_AB(4 downto 0);
+--	W_2N_DI <= I_CNF_D(3 downto 0) when I_CNF_EN = '1' else (others => '0');
 
-	U_2N : entity work.ram_256_4
-	port map (
+--	U_2N : entity work.ram_256_4
+--	port map (
 
-		I_CLK		=> CLK_12M,
-		I_ADDR	=> W_2N_AD,
-		I_D		=> W_2N_DI,
-		I_CE		=> '1',
-		I_WE		=> I_WE4,
-		O_D		=> W_2N_DO
-	);
+--		I_CLK		=> CLK_12M,
+--		I_ADDR	=> W_2N_AD,
+--		I_D		=> W_2N_DI,
+--		I_CE		=> '1',
+--		I_WE		=> I_WE4,
+--		O_D		=> W_2N_DO
+--	);
+	W_2N_AD <= W_vram_AB(9 downto 7) & W_vram_AB(4 downto 0);
+    U_2N: entity work.CHAR_PROM
+    port  map(
+        ADDR        => W_2N_AD,
+        DATA        => temp_vec8
+    );
+    W_2N_DO <= temp_vec8(3 downto 0);
 
 	--    Parts  2M
 	process(CLK_2M)

@@ -24,17 +24,17 @@ library unisim;
 entity dkong_col_pal is
 	port(
 		CLK_6M		: in  std_logic;
-		CLK_12M		: in  std_logic;
+--		CLK_12M		: in  std_logic;
 		I_VRAM_D		: in  std_logic_vector( 5 downto 0);
 		I_OBJ_D		: in  std_logic_vector( 5 downto 0);
 		I_CMPBLKn	: in  std_logic;
 		I_5H_Q6		: in  std_logic;
 		I_5H_Q7		: in  std_logic;
-		I_CNF_A		: in  std_logic_vector( 7 downto 0);
-		I_CNF_D		: in  std_logic_vector( 7 downto 0);
-		I_CNF_EN		: in  std_logic;
-		I_WE2			: in  std_logic;
-		I_WE3			: in  std_logic;
+--		I_CNF_A		: in  std_logic_vector( 7 downto 0);
+--		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+--		I_CNF_EN		: in  std_logic;
+--		I_WE2			: in  std_logic;
+--		I_WE3			: in  std_logic;
 		O_R			: out std_logic_vector( 2 downto 0);
 		O_G			: out std_logic_vector( 2 downto 0);
 		O_B			: out std_logic_vector( 1 downto 0)
@@ -53,8 +53,8 @@ architecture RTL of dkong_col_pal is
 	signal W_2E_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_2F_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	
-	signal PAL_AD		: std_logic_vector( 7 downto 0) := (others => '0');
-	signal PAL_DI		: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal PAL_AD		: std_logic_vector( 7 downto 0) := (others => '0');
+--	signal PAL_DI		: std_logic_vector( 7 downto 0) := (others => '0');
 
 begin
 
@@ -77,27 +77,39 @@ begin
 -------  PARTS 2EF ------------------------------------
 	W_PAL_AB <= W_1EF_Q(9 downto 2);
 
-	PAL_AD <= I_CNF_A when I_CNF_EN = '1' else W_PAL_AB;
-	PAL_DI <= I_CNF_D when I_CNF_EN = '1' else (others => '0');
+--	PAL_AD <= I_CNF_A when I_CNF_EN = '1' else W_PAL_AB;
+--	PAL_DI <= I_CNF_D when I_CNF_EN = '1' else (others => '0');
 	
-	U2EF : entity work.ram_2048_8_8
+--	U2EF : entity work.ram_2048_8_8
+--	port map (
+--		--   A Port
+--		I_CLKA					=> not CLK_12M,
+--		I_ADDRA(10 downto 8)	=> "000",
+--		I_ADDRA( 7 downto 0)	=> PAL_AD,
+--		I_DA						=> PAL_DI,
+--		I_CEA						=> '1',
+--		I_WEA						=> I_WE2,
+--		O_DA						=> W_2E_DO,
+--		--   B Port    
+--		I_CLKB					=> not CLK_12M,
+--		I_ADDRB(10 downto 8)	=> "001",
+--		I_ADDRB( 7 downto 0)	=> PAL_AD,
+--		I_DB						=> PAL_DI,
+--		I_CEB						=> '1',
+--		I_WEB						=> I_WE3,
+--		O_DB						=> W_2F_DO
+--	);
+    -- only 4-bits data are used 
+	U2E : entity work.PAL_PROM_2E
 	port map (
-		--   A Port
-		I_CLKA					=> not CLK_12M,
-		I_ADDRA(10 downto 8)	=> "000",
-		I_ADDRA( 7 downto 0)	=> PAL_AD,
-		I_DA						=> PAL_DI,
-		I_CEA						=> '1',
-		I_WEA						=> I_WE2,
-		O_DA						=> W_2E_DO,
-		--   B Port    
-		I_CLKB					=> not CLK_12M,
-		I_ADDRB(10 downto 8)	=> "001",
-		I_ADDRB( 7 downto 0)	=> PAL_AD,
-		I_DB						=> PAL_DI,
-		I_CEB						=> '1',
-		I_WEB						=> I_WE3,
-		O_DB						=> W_2F_DO
+       ADDR => W_PAL_AB, -- PAL_AD,
+       DATA => W_2E_DO
+	);
+    -- only 4-bits data are used 
+	U2F : entity work.PAL_PROM_2F
+	port map (
+       ADDR => W_PAL_AB, -- PAL_AD,
+       DATA => W_2F_DO
 	);
 
 	O_R(0) <= not W_2F_DO(3) when I_CMPBLKn = '1' else '0';

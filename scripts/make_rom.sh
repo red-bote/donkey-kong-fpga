@@ -54,15 +54,12 @@ $ROMGEN/romgen $ROMS/v_3pt.bin  VID_ROM_1 11 l r e > $BUILD/vid_rom_1.vhd
 $ROMGEN/romgen $ROMS/v_5h_b.bin VID_ROM_2 11 l r e > $BUILD/vid_rom_2.vhd
 
 # sound PROMs (ExxxH of SRAM)
-#cat $ROMS/s_3i_b.bin $ROMS/s_3j_b.bin  > $BUILD/snd_prom.bin
-#$ROMGEN/romgen $BUILD/snd_prom.bin SND_PROM 12 l r e  > $BUILD/snd_prom.vhd
 $ROMGEN/romgen $ROMS/s_3i_b.bin  SND_PROG_ROM 11 l r e  > $BUILD/snd_data_rom.vhd
 $ROMGEN/romgen $ROMS/s_3j_b.bin  SND_DATA_ROM 11 l r e  > $BUILD/snd_prog_rom.vhd
 
-
 # palette PROMs (F0xxH, F1xxH of SRAM)
-cat $ROMS/c-2k.bpr $ROMS/c-2j.bpr  > $BUILD/pal_prom.bin
-$ROMGEN/romgen $BUILD/pal_prom.bin PAL_PROM 9 l r e   > $BUILD/pal_prom.vhd
+$ROMGEN/romgen $ROMS/c-2k.bpr PAL_PROM_2E 8 c   > $BUILD/pal_prom_2E.vhd
+$ROMGEN/romgen $ROMS/c-2j.bpr PAL_PROM_2F 8 c   > $BUILD/pal_prom_2F.vhd
 
 # character PROMs (F2xxH of SRAM) Changed to combinatorial, tiles glitch if registered! 
 $ROMGEN/romgen $ROMS/v-5e.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
