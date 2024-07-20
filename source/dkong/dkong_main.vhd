@@ -224,11 +224,11 @@ architecture RTL of dkong_main is
 		I8035_T0		: out std_logic;
 		I8035_T1		: out std_logic;
 
-		I_CNF_A		: in  std_logic_vector(10 downto 0);
-		I_CNF_D		: in  std_logic_vector( 7 downto 0);
-		I_WE0			: in  std_logic;
-		I_WE1			: in  std_logic;
-		I_CNF_EN		: in  std_logic;
+--		I_CNF_A		: in  std_logic_vector(10 downto 0);
+--		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+--		I_WE0			: in  std_logic;
+--		I_WE1			: in  std_logic;
+--		I_CNF_EN		: in  std_logic;
 
 		I_SOUND_DAT	: in  std_logic_vector( 3 downto 0);
 		I_SOUND_CNT	: in  std_logic_vector( 3 downto 0);
@@ -721,11 +721,11 @@ begin
 		I8035_T0			=> I8035_T0,
 		I8035_T1			=> I8035_T1,
 
-		I_CNF_A			=> (others => '0'), -- R_AD(10 downto 0),
-		I_CNF_D			=> (others => '0'), -- SND_PROM_DO,
-		I_WE0				=> '0', -- W_W0_WE,
-		I_WE1				=> '0', -- W_W1_WE,
-		I_CNF_EN			=> '0', -- W_CNF_EN,
+--		I_CNF_A			=> (others => '0'), -- R_AD(10 downto 0),
+--		I_CNF_D			=> (others => '0'), -- SND_PROM_DO,
+--		I_WE0				=> '0', -- W_W0_WE,
+--		I_WE1				=> '0', -- W_W1_WE,
+--		I_CNF_EN			=> '0', -- W_CNF_EN,
 
 		I_SOUND_DAT		=> W_3D_Q,
 		I_SOUND_CNT		=> W_SOUND_CNT,

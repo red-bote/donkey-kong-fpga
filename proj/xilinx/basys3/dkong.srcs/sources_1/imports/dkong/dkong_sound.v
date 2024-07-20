@@ -20,7 +20,7 @@
 module dkong_sound(
 
 I_CLK1,
-I_CLK2,
+//I_CLK2,
 I_RST,
 I8035_DBI,
 I8035_DBO,
@@ -35,11 +35,11 @@ I8035_INTn,
 I8035_T0,
 I8035_T1,
 
-I_CNF_A,
-I_CNF_D,
-I_WE0,
-I_WE1,
-I_CNF_EN,
+//I_CNF_A,
+//I_CNF_D,
+//I_WE0,
+//I_WE1,
+//I_CNF_EN,
 
 I_SOUND_DAT,
 I_SOUND_CNT,
@@ -47,7 +47,7 @@ O_SOUND_DAT
 
 );
 
-input   I_CLK1,I_CLK2;
+input   I_CLK1; // ,I_CLK2;
 input   I_RST;
 
 input   [7:0]I8035_DBI;
@@ -67,11 +67,11 @@ output  I8035_T0;
 output  I8035_T1;
 output  I8035_RSTn;
 
-input   [10:0]I_CNF_A;
-input   [7:0]I_CNF_D;
-input   I_WE0;
-input   I_WE1;
-input   I_CNF_EN;
+//input   [10:0]I_CNF_A;
+//input   [7:0]I_CNF_D;
+//input   I_WE0;
+//input   I_WE1;
+//input   I_CNF_EN;
 
 output  [7:0]O_SOUND_DAT;
 
@@ -79,7 +79,7 @@ assign  I8035_T0    = ~I_SOUND_CNT[3];
 assign  I8035_T1    = ~I_SOUND_CNT[2];
 assign  I8035_PBO[5] = ~I_SOUND_CNT[1];
 assign  I8035_INTn  = ~I_SOUND_CNT[0];
-assign  I8035_RSTn  = I_RST& ~I_CNF_EN;
+assign  I8035_RSTn  = I_RST; // assign  I8035_RSTn  = I_RST& ~I_CNF_EN;
 
 assign  I8035_PBO[4:0] = 5'b00000;
 assign  I8035_PBO[7:6] = 2'b00;
@@ -97,8 +97,8 @@ always@(posedge I_CLK1) S_D1_CS <= I8035_PBI[6]&(~I8035_RDn);
 wire    [7:0]S_D1 = S_D1_CS ? {4'h0,~I_SOUND_DAT[3:0]}: 8'h00 ; 
 
 //----  PROG ROM 3H ---------------------------
-wire   [10:0]ROM_A = I_CNF_EN ? I_CNF_A : S_ROM_A ;
-wire   [7:0] ROM_D = I_CNF_EN ? I_CNF_D : 8'h00 ;
+//wire   [10:0]ROM_A = I_CNF_EN ? I_CNF_A : S_ROM_A ;
+//wire   [7:0] ROM_D = I_CNF_EN ? I_CNF_D : 8'h00 ;
 
 wire    [7:0]S_PROG_DB;
 wire    [7:0]S_PROG_D  = I8035_PSENn ? 8'h00 : S_PROG_DB ;
@@ -114,7 +114,7 @@ wire    [7:0]S_PROG_D  = I8035_PSENn ? 8'h00 : S_PROG_DB ;
 //
 //);
 SND_PROG_ROM #()
-sound_prog2( I_CLK1, (1'b1), ROM_A, S_PROG_DB );
+sound_prog( I_CLK1, (1'b1), S_ROM_A, S_PROG_DB );
 
 
 //----  DATA ROM 3H ---------------------------
@@ -134,7 +134,7 @@ wire    [7:0]S_D2 = S_D2_CS ? S_DB2 : 8'h00 ;
 //
 //);
 SND_DATA_ROM #()
-sound_data2( I_CLK1, (1'b1), ROM_A, S_DB2 );
+sound_data( I_CLK1, (1'b1), S_ROM_A, S_DB2 );
 
 
 //----  I8035_DB IO I/F -----------------------

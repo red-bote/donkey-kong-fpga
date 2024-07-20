@@ -121,9 +121,9 @@ cat $ROMS/c_3h.bin  > $BUILD/snd_prom.bin
 $ROMGEN/romgen $BUILD/snd_prom.bin SND_PROM 12 l r e  > $BUILD/snd_prom.vhd
 
 # palette PROMs (F0xxH, F1xxH of SRAM)
-#cat $ROMS/c-2k.bpr $ROMS/c-2j.bpr  > $BUILD/pal_prom.bin
-cat $ROMS/c-2e.bpr $ROMS/c-2f.bpr  > $BUILD/pal_prom.bin
-$ROMGEN/romgen $BUILD/pal_prom.bin PAL_PROM 9 l r e   > $BUILD/pal_prom.vhd
+$ROMGEN/romgen $ROMS/c-2e.bpr PAL_PROM_2E 8 c   > $BUILD/pal_prom_2E.vhd
+$ROMGEN/romgen $ROMS/c-2f.bpr PAL_PROM_2F 8 c   > $BUILD/pal_prom_2F.vhd
+
 
 # character PROMs (F2xxH of SRAM) Changed to combinatorial, tiles glitch if registered! 
 #$ROMGEN/romgen $ROMS/v-5e.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
