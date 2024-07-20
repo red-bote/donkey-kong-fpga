@@ -92,6 +92,7 @@ architecture RTL of dkong_main is
 	signal W_OBJ_RQn			: std_logic := '1';
 	signal W_OBJ_WRn			: std_logic := '1';
 	signal W_RAM1_CSn			: std_logic := '1';
+	signal W_RAM2_CSn			: std_logic := '1';
 	signal W_RAM3_CSn			: std_logic := '1';
 	signal W_ROM_CSn			: std_logic := '1';
 	signal W_SW1_OEn			: std_logic := '1';
@@ -166,6 +167,75 @@ architecture RTL of dkong_main is
 --	signal PAL_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 --	signal CHAR_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 
+    -- using dkong_adec.v from original Verilog source
+	component dkong_adec
+	port (
+		I_CLK12M			: in  std_logic;
+		I_CLK				: in  std_logic;
+		I_RESET_n		: in  std_logic;
+		I_AB				: in  std_logic_vector(15 downto 0);
+		I_DB				: in  std_logic_vector( 3 downto 0);
+		I_MREQ_n			: in  std_logic;
+		I_RFSH_n			: in  std_logic;
+		I_RD_n			: in  std_logic;
+		I_WR_n			: in  std_logic;
+		I_VRAMBUSY_n	: in  std_logic;
+		I_VBLK_n			: in  std_logic;
+
+		O_WAIT_n			: out std_logic;
+		O_NMI_n			: out std_logic;
+		O_ROM_CS_n		: out std_logic;								-- 0000 H - 3FFF H  (5E,5C,5B,5A)
+		O_RAM1_CS_n		: out std_logic;								-- 6000 H - 67FF H  (3B,3C,4B,4C)
+		O_RAM2_CS_n		: out std_logic;								-- 6000 H - 67FF H  (3B,3C,4B,4C)
+		O_RAM3_CS_n		: out std_logic;								-- 6800 H - 6BFF H  (3A,4A)
+		--O_DMA_CS_n		: out std_logic;								-- 7800 H - 783F H  (DMA)
+        --O_6A_G_n		: out std_logic;								-- 7000 H - 77FF H   => Active
+		O_OBJ_RQ_n		: out std_logic;								-- 7000 H - 73FF H
+		O_OBJ_RD_n		: out std_logic;								-- 7000 H - 73FF H  (R mode)
+		O_OBJ_WR_n		: out std_logic;								-- 7000 H - 73FF H  (W mode)
+		O_VRAM_RD_n		: out std_logic;								-- 7400 H - 77FF H  (R mode)
+		O_VRAM_WR_n		: out std_logic;								-- 7400 H - 77FF H  (W mode)
+		O_SW1_OE_n		: out std_logic;								-- 7C00 H           (R mode)
+		O_SW2_OE_n		: out std_logic;								-- 7C80 H           (R mode)
+		O_SW3_OE_n		: out std_logic;								-- 7D00 H           (R mode)
+		O_DIP_OE_n		: out std_logic;								-- 7D80 H           (R mode)
+		O_5H_Q			: out std_logic_vector( 7 downto 0);   -- FLIP,
+		O_6H_Q			: out std_logic_vector( 7 downto 0);   -- sound
+		O_3D_Q			: out std_logic_vector( 3 downto 0)    -- sound
+	);
+	end component;
+
+
+    component dkong_sound
+	port(
+		I_CLK1		: in  std_logic;
+		--I_CLK2		: in  std_logic; -- unused
+		I_RST			: in  std_logic;
+		I8035_DBI	: in  std_logic_vector( 7 downto 0);
+		I8035_DBO	: out std_logic_vector( 7 downto 0);
+		I8035_PAI	: in  std_logic_vector( 7 downto 0);
+		I8035_PBI	: in  std_logic_vector( 7 downto 0);
+		I8035_PBO	: out std_logic_vector( 7 downto 0);
+		I8035_ALE	: in  std_logic;
+		I8035_RDn	: in  std_logic;
+		I8035_PSENn	: in  std_logic;
+		I8035_RSTn	: out std_logic;
+		I8035_INTn	: out std_logic;
+		I8035_T0		: out std_logic;
+		I8035_T1		: out std_logic;
+
+		I_CNF_A		: in  std_logic_vector(10 downto 0);
+		I_CNF_D		: in  std_logic_vector( 7 downto 0);
+		I_WE0			: in  std_logic;
+		I_WE1			: in  std_logic;
+		I_CNF_EN		: in  std_logic;
+
+		I_SOUND_DAT	: in  std_logic_vector( 3 downto 0);
+		I_SOUND_CNT	: in  std_logic_vector( 3 downto 0);
+		O_SOUND_DAT	: out std_logic_vector( 7 downto 0)
+	);
+    end component;
+
 begin
 	------- SW Interface --|---------------------------------------------------------
 	--                     |  B7     B6     B5     B4     B3     B2     B1     B0
@@ -211,6 +281,7 @@ begin
 		not W_SW3 when W_SW3_OEn  = '0' else
 		    W_DIP when W_DIP_OEn  = '0' else
 		W_RAM1_DO when W_RAM1_CSn = '0' else
+		W_RAM2_DO when W_RAM2_CSn = '0' else
 		W_RAM3_DO when W_RAM3_CSn = '0' else
 		W_VRAM_DB when W_VRAM_RDn = '0' else
 		WB_ROM_DO when (W_ROM_CSn = '0') and (W_CPU_RDn = '0') else
@@ -314,12 +385,19 @@ begin
 --	end process;
 
 
-  u_cpu_rom : entity work.CPU_ROM
+--  u_cpu_rom : entity work.CPU_ROM
+--  port  map(
+--    CLK         => I_CLK_24576M,
+--    ENA         => W_CLK_12288M,
+--    ADDR        => W_CPU_A(13 downto 0),
+--    DATA        => WB_ROM_DO
+--    );
+  u_cpu_rom : entity work.program_rom
   port  map(
-    CLK         => I_CLK_24576M,
-    ENA         => W_CLK_12288M,
-    ADDR        => W_CPU_A(13 downto 0),
-    DATA        => WB_ROM_DO
+    i_clk       => I_CLK_24576M,
+    i_en        => W_CLK_12288M,
+    i_addr      => W_CPU_A,
+    o_data      => WB_ROM_DO
     );
 
   u_obj_rom1 : entity work.OBJ_ROM_1
@@ -354,19 +432,20 @@ begin
     DATA        => OBJ_ROM4_DO
     );
 
+  -- allow 4096 byte ROM for DKjr
   u_vid1_rom: entity work.VID_ROM_1
   port  map(
     CLK         => I_CLK_24576M,
     ENA         => W_CLK_12288M,
-    ADDR        => VID_ROM_A(10 downto 0),
+    ADDR        => VID_ROM_A(11 downto 0),
     DATA        => VID_ROM1_DO
     );
-
+  -- allow 4096 byte ROM for DKjr
   u_vid2_rom: entity work.VID_ROM_2
   port  map(
     CLK         => I_CLK_24576M,
     ENA         => W_CLK_12288M,
-    ADDR        => VID_ROM_A(10 downto 0), -- W_VC_A(10 downto 0),
+    ADDR        => VID_ROM_A(11 downto 0), -- W_VC_A(10 downto 0),
     DATA        => VID_ROM2_3N_DO
     );
 
@@ -418,8 +497,9 @@ begin
 		DOE			=> open
 	);
 
-	-- INT RAM Interface
-	U_3C4C3B4B : entity work.ram_2048_8
+	-- INT RAM Interface - RAM 1, 2, 3 are pairs of 1K X 4 Static Ram (so 2048 is oversize)
+--	U_3C4C3B4B : entity work.ram_2048_8
+	U_3C4C : entity work.ram_2048_8
 	port map (
 		I_CLK			=> not W_CLK_12288M,
 		I_ADDR		=> W_CPU_A(10 downto 0),
@@ -427,6 +507,16 @@ begin
 		I_CE			=> not W_RAM1_CSn,
 		I_WE			=> not W_CPU_WRn,
 		O_D			=> W_RAM1_DO
+	);
+
+	U_3B4B : entity work.ram_2048_8
+	port map (
+		I_CLK			=> not W_CLK_12288M,
+		I_ADDR		=> W_CPU_A(10 downto 0),
+		I_D			=> W_CPU_DO,
+		I_CE			=> not W_RAM2_CSn,
+		I_WE			=> not W_CPU_WRn,
+		O_D			=> W_RAM2_DO
 	);
 
 	-- dual port implements DMA through W_OBJ_AB
@@ -451,7 +541,7 @@ begin
 	);
 
 	-- Address Decoder
-	adec : entity work.dkong_adec
+	adec : dkong_adec -- entity work.dkong_adec
 	port map (
 		I_CLK12M			=> W_CLK_12288M,
 		I_CLK				=> WB_CLK_03072M,
@@ -467,8 +557,11 @@ begin
 		O_WAIT_n			=> W_CPU_WAITn,
 		O_NMI_n			=> W_CPU_NMIn,
 		O_ROM_CS_n		=> W_ROM_CSn,
-		O_RAM1_CS_n		=> W_RAM1_CSn,
+		O_RAM1_CS_n		=> W_RAM1_CSn, -- 1K addressed
+		O_RAM2_CS_n		=> W_RAM2_CSn, -- 1K addressed
 		O_RAM3_CS_n		=> W_RAM3_CSn,
+		--O_DMA_CS_n => open,
+		--O_6A_G_n => open,
 		O_OBJ_RQ_n		=> W_OBJ_RQn,
 		O_OBJ_RD_n		=> W_OBJ_RDn,
 		O_OBJ_WR_n		=> W_OBJ_WRn,
@@ -610,10 +703,10 @@ begin
 		O_P2				=> I8035_PBI
 	);
 
-	digital_sound : entity work.dkong_sound
+	digital_sound : dkong_sound -- entity work.dkong_sound
 	port map (
 		I_CLK1			=> W_CLK_12288M,
-		I_CLK2			=> I_CLK_24576M,
+		--I_CLK2			=> I_CLK_24576M,  -- not used
 		I_RST				=> I_RESETn,
 		I8035_DBI		=> I8035_DBI,
 		I8035_DBO		=> I8035_DBO,
@@ -628,11 +721,11 @@ begin
 		I8035_T0			=> I8035_T0,
 		I8035_T1			=> I8035_T1,
 
---		I_CNF_A			=> R_AD(10 downto 0),
---		I_CNF_D			=> SND_PROM_DO,
---		I_WE0				=> W_W0_WE,
---		I_WE1				=> W_W1_WE,
---		I_CNF_EN			=> W_CNF_EN,
+		I_CNF_A			=> (others => '0'), -- R_AD(10 downto 0),
+		I_CNF_D			=> (others => '0'), -- SND_PROM_DO,
+		I_WE0				=> '0', -- W_W0_WE,
+		I_WE1				=> '0', -- W_W1_WE,
+		I_CNF_EN			=> '0', -- W_CNF_EN,
 
 		I_SOUND_DAT		=> W_3D_Q,
 		I_SOUND_CNT		=> W_SOUND_CNT,

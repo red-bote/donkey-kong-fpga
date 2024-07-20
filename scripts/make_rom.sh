@@ -32,15 +32,65 @@
 #genrom.py dkong_rom.bin ..\build\ROM.vhd
 
 
-ROMS=../roms
+ROMS=../roms/dkong
 ROMGEN=../romgen_source
 BUILD=../build
 
 echo ---------- build PROM data ---------- 
 
 # CPU (at 0000H in SRAM)
-cat $ROMS/c_5et_g.bin $ROMS/c_5ct_g.bin $ROMS/c_5bt_g.bin $ROMS/c_5at_g.bin  > $BUILD/cpu_rom.bin
-$ROMGEN/romgen $BUILD/cpu_rom.bin CPU_ROM 14 l r e > $BUILD/cpu_rom.vhd
+# cat $ROMS/c_5et_g.bin $ROMS/c_5ct_g.bin $ROMS/c_5bt_g.bin $ROMS/c_5at_g.bin  > $BUILD/cpu_rom.bin
+# $ROMGEN/romgen $BUILD/cpu_rom.bin CPU_ROM 14 l r e > $BUILD/cpu_rom.vhd
+
+
+##cat $ROMS/c_5et_g.bin  > $BUILD/cpu_rom_0.bin
+#dd bs=1 count=4096 skip=0  if=$ROMS/c_5et_g.bin  of=$BUILD/cpu_rom_0.bin
+#$ROMGEN/romgen $BUILD/cpu_rom_0.bin CPU_ROM_0 12 l r e > $BUILD/cpu_rom_0.vhd
+#
+##cat $ROMS/c_5ct_g.bin  > $BUILD/cpu_rom_1.bin
+#dd bs=1 count=4096 skip=0  if=$ROMS/c_5ct_g.bin  of=$BUILD/cpu_rom_1.bin
+#$ROMGEN/romgen $BUILD/cpu_rom_1.bin CPU_ROM_1 12 l r e > $BUILD/cpu_rom_1.vhd
+#
+##cat $ROMS/c_5bt_g.bin  > $BUILD/cpu_rom_2.bin
+#dd bs=1 count=4096 skip=0  if=$ROMS/c_5bt_g.bin of=$BUILD/cpu_rom_2.bin
+#$ROMGEN/romgen $BUILD/cpu_rom_2.bin CPU_ROM_2 12 l r e > $BUILD/cpu_rom_2.vhd
+#
+##cat $ROMS/c_5at_g.bin  > $BUILD/cpu_rom_3.bin
+#dd bs=1 count=4096 skip=0  if=$ROMS/c_5at_g.bin of=$BUILD/cpu_rom_3.bin
+#$ROMGEN/romgen $BUILD/cpu_rom_3.bin CPU_ROM_3 12 l r e > $BUILD/cpu_rom_3.vhd
+
+
+dd bs=1 count=2048 skip=0    if=$ROMS/c_5et_g.bin  of=$BUILD/cpu_rom_0000.bin
+$ROMGEN/romgen $BUILD/cpu_rom_0000.bin CPU_ROM_0000 11 l r e > $BUILD/cpu_rom_0000.vhd
+dd bs=1 count=2048 skip=2048 if=$ROMS/c_5et_g.bin  of=$BUILD/cpu_rom_0800.bin
+$ROMGEN/romgen $BUILD/cpu_rom_0800.bin CPU_ROM_0800 11 l r e > $BUILD/cpu_rom_0800.vhd
+
+dd bs=1 count=2048 skip=0    if=$ROMS/c_5ct_g.bin  of=$BUILD/cpu_rom_1000.bin
+$ROMGEN/romgen $BUILD/cpu_rom_1000.bin CPU_ROM_1000 11 l r e > $BUILD/cpu_rom_1000.vhd
+dd bs=1 count=2048 skip=2048 if=$ROMS/c_5ct_g.bin  of=$BUILD/cpu_rom_1800.bin
+$ROMGEN/romgen $BUILD/cpu_rom_1800.bin CPU_ROM_1800 11 l r e > $BUILD/cpu_rom_1800.vhd
+
+dd bs=1 count=2048 skip=0    if=$ROMS/c_5bt_g.bin of=$BUILD/cpu_rom_2000.bin
+$ROMGEN/romgen $BUILD/cpu_rom_2000.bin CPU_ROM_2000 11 l r e > $BUILD/cpu_rom_2000.vhd
+dd bs=1 count=2048 skip=2048 if=$ROMS/c_5bt_g.bin of=$BUILD/cpu_rom_2800.bin
+$ROMGEN/romgen $BUILD/cpu_rom_2800.bin CPU_ROM_2800 11 l r e > $BUILD/cpu_rom_2800.vhd
+
+dd bs=1 count=2048 skip=0    if=$ROMS/c_5at_g.bin of=$BUILD/cpu_rom_3000.bin
+$ROMGEN/romgen $BUILD/cpu_rom_3000.bin CPU_ROM_3000 11 l r e > $BUILD/cpu_rom_3000.vhd
+dd bs=1 count=2048 skip=2048 if=$ROMS/c_5at_g.bin of=$BUILD/cpu_rom_3800.bin
+$ROMGEN/romgen $BUILD/cpu_rom_3800.bin CPU_ROM_3800 11 l r e > $BUILD/cpu_rom_3800.vhd
+
+#4000-5FFF not poulated on DK
+dd bs=1 count=2048 skip=0    if=/dev/zero         of=$BUILD/cpu_rom_4000.bin
+$ROMGEN/romgen $BUILD/cpu_rom_4000.bin CPU_ROM_4000 11 l r e > $BUILD/cpu_rom_4000.vhd
+dd bs=1 count=2048 skip=2048 if=/dev/zero         of=$BUILD/cpu_rom_4800.bin
+$ROMGEN/romgen $BUILD/cpu_rom_4800.bin CPU_ROM_4800 11 l r e > $BUILD/cpu_rom_4800.vhd
+
+dd bs=1 count=2048 skip=0    if=/dev/zero         of=$BUILD/cpu_rom_5000.bin
+$ROMGEN/romgen $BUILD/cpu_rom_5000.bin CPU_ROM_5000 11 l r e > $BUILD/cpu_rom_5000.vhd
+dd bs=1 count=2048 skip=2048 if=/dev/zero         of=$BUILD/cpu_rom_5800.bin
+$ROMGEN/romgen $BUILD/cpu_rom_5800.bin CPU_ROM_5800 11 l r e > $BUILD/cpu_rom_5800.vhd
+
 
 # GFX2 (AxxxH, BxxxH, CxxxH, DxxxH of SRAM)
 $ROMGEN/romgen $ROMS/l_4m_b.bin OBJ_ROM_1 11 l r e > $BUILD/obj_rom_1.vhd
@@ -48,10 +98,11 @@ $ROMGEN/romgen $ROMS/l_4n_b.bin OBJ_ROM_2 11 l r e > $BUILD/obj_rom_2.vhd
 $ROMGEN/romgen $ROMS/l_4r_b.bin OBJ_ROM_3 11 l r e > $BUILD/obj_rom_3.vhd
 $ROMGEN/romgen $ROMS/l_4s_b.bin OBJ_ROM_4 11 l r e > $BUILD/obj_rom_4.vhd
 
+# Gfx ROMs sized 2048 for DK, 4096 for DKjr
 # GFX1 (6xxxH of SRAM)
-$ROMGEN/romgen $ROMS/v_3pt.bin  VID_ROM_1 11 l r e > $BUILD/vid_rom_1.vhd
+$ROMGEN/romgen $ROMS/v_3pt.bin  VID_ROM_1 12 l r e > $BUILD/vid_rom_1.vhd
 # GFX1 (7xxxH of SRAM)
-$ROMGEN/romgen $ROMS/v_5h_b.bin VID_ROM_2 11 l r e > $BUILD/vid_rom_2.vhd
+$ROMGEN/romgen $ROMS/v_5h_b.bin VID_ROM_2 12 l r e > $BUILD/vid_rom_2.vhd
 
 # sound PROMs (ExxxH of SRAM)
 $ROMGEN/romgen $ROMS/s_3i_b.bin  SND_PROG_ROM 11 l r e  > $BUILD/snd_data_rom.vhd
