@@ -122,7 +122,7 @@ architecture RTL of dkong_main is
 	signal OBJ_ROM_A			: std_logic_vector(11 downto 0) := (others => '0');
 --	signal R_AD					: std_logic_vector(12 downto 0) := (others => '0');
 	signal VID_ROM1_DO		: std_logic_vector( 7 downto 0) := (others => '0');
---	signal VID_ROM2_DO		: std_logic_vector( 7 downto 0) := (others => '0');
+	signal VID_ROM2_DO		: std_logic_vector( 7 downto 0) := (others => '0');
 	signal VID_ROM_A			: std_logic_vector(11 downto 0) := (others => '0');
 	signal WAV_ROM_A			: std_logic_vector(17 downto 0) := (others => '0');
 	signal WAV_ROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
@@ -161,13 +161,7 @@ architecture RTL of dkong_main is
 	signal rgb_in				: std_logic_vector(15 downto 0) := (others => '0');
 	signal rgb_out				: std_logic_vector(15 downto 0) := (others => '0');
 	signal sound_mix			: std_logic_vector( 8 downto 0) := (others => '0');
-        -- new signals for discrete data busses needed to eliminate SRAM
-	signal VID_ROM2_3N_DO			: std_logic_vector( 7 downto 0) := (others => '0');
---	signal SND_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
---	signal PAL_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
---	signal CHAR_PROM_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 
-    -- using dkong_adec.v from original Verilog source
 	component dkong_adec
 	port (
 		I_CLK12M			: in  std_logic;
@@ -181,7 +175,6 @@ architecture RTL of dkong_main is
 		I_WR_n			: in  std_logic;
 		I_VRAMBUSY_n	: in  std_logic;
 		I_VBLK_n			: in  std_logic;
-
 		O_WAIT_n			: out std_logic;
 		O_NMI_n			: out std_logic;
 		O_ROM_CS_n		: out std_logic;								-- 0000 H - 3FFF H  (5E,5C,5B,5A)
@@ -199,17 +192,39 @@ architecture RTL of dkong_main is
 		O_SW2_OE_n		: out std_logic;								-- 7C80 H           (R mode)
 		O_SW3_OE_n		: out std_logic;								-- 7D00 H           (R mode)
 		O_DIP_OE_n		: out std_logic;								-- 7D80 H           (R mode)
+--	.O_4H_Q(W_4H_Q),
 		O_5H_Q			: out std_logic_vector( 7 downto 0);   -- FLIP,
 		O_6H_Q			: out std_logic_vector( 7 downto 0);   -- sound
 		O_3D_Q			: out std_logic_vector( 3 downto 0)    -- sound
 	);
 	end component;
 
+    component dkong_vram is
+	port(
+		CLK_12M		: in  std_logic;
+		I_AB			: in  std_logic_vector( 9 downto 0);
+		I_DB			: in  std_logic_vector( 7 downto 0);
+		I_VRAM_WRn	: in  std_logic;
+		I_VRAM_RDn	: in  std_logic;
+		I_FLIP		: in  std_logic;
+		I_H_CNT		: in  std_logic_vector( 9 downto 0);
+		I_VF_CNT		: in  std_logic_vector( 7 downto 0);
+		I_CMPBLK		: in  std_logic;
+		O_VRAM_AB	: out std_logic_vector(11 downto 0);
+		I_VRAM_D1	: in  std_logic_vector( 7 downto 0);
+		I_VRAM_D2	: in  std_logic_vector( 7 downto 0);
+		---- Debug ----
+		O_DB			: out std_logic_vector( 7 downto 0);
+		O_COL			: out std_logic_vector( 3 downto 0);
+		O_VID			: out std_logic_vector( 1 downto 0);
+		O_VRAMBUSYn	: out std_logic;
+		O_ESBLKn		: out std_logic
+	);
+    end component;
 
     component dkong_sound
 	port(
 		I_CLK1		: in  std_logic;
-		--I_CLK2		: in  std_logic; -- unused
 		I_RST			: in  std_logic;
 		I8035_DBI	: in  std_logic_vector( 7 downto 0);
 		I8035_DBO	: out std_logic_vector( 7 downto 0);
@@ -223,13 +238,6 @@ architecture RTL of dkong_main is
 		I8035_INTn	: out std_logic;
 		I8035_T0		: out std_logic;
 		I8035_T1		: out std_logic;
-
---		I_CNF_A		: in  std_logic_vector(10 downto 0);
---		I_CNF_D		: in  std_logic_vector( 7 downto 0);
---		I_WE0			: in  std_logic;
---		I_WE1			: in  std_logic;
---		I_CNF_EN		: in  std_logic;
-
 		I_SOUND_DAT	: in  std_logic_vector( 3 downto 0);
 		I_SOUND_CNT	: in  std_logic_vector( 3 downto 0);
 		O_SOUND_DAT	: out std_logic_vector( 7 downto 0)
@@ -374,7 +382,7 @@ begin
 --				when "1101" =>	OBJ_ROM3_DO	<= I_ROM_DB;						-- read OBJ_ROM3  7E ADDR = CxxxH
 --									O_ROM_AB		<= "001101"	& OBJ_ROM_A;		--  set OBJ_ROM4  7F ADDR = DxxxH
 --				when "1110" =>	OBJ_ROM4_DO <= I_ROM_DB;						-- read OBJ_ROM4  7F ADDR = DxxxH
-
+--
 --				when "1111" =>	O_ROM_AB		<= "00"		& W_CPU_A;			--  set PROG ROM
 --					if W_CNF_EN = '1' then
 --						R_AD <=  R_AD + 1;
@@ -384,14 +392,6 @@ begin
 --		end if;
 --	end process;
 
-
---  u_cpu_rom : entity work.CPU_ROM
---  port  map(
---    CLK         => I_CLK_24576M,
---    ENA         => W_CLK_12288M,
---    ADDR        => W_CPU_A(13 downto 0),
---    DATA        => WB_ROM_DO
---    );
   u_cpu_rom : entity work.program_rom
   port  map(
     i_clk       => I_CLK_24576M,
@@ -445,18 +445,18 @@ begin
   port  map(
     CLK         => I_CLK_24576M,
     ENA         => W_CLK_12288M,
-    ADDR        => VID_ROM_A(11 downto 0), -- W_VC_A(10 downto 0),
-    DATA        => VID_ROM2_3N_DO
+    ADDR        => VID_ROM_A(11 downto 0),
+    DATA        => VID_ROM2_DO
     );
 
 --  u_snd_rom: entity work.SND_PROM
 --  port  map(
 --    CLK         => I_CLK_24576M,
 --    ENA         => W_CLK_12288M,
---    ADDR        => R_AD(11 downto 0), -- W_VC_A(11 downto 0),
+--    ADDR        => R_AD(11 downto 0),
 --    DATA        => SND_PROM_DO
 --    );
-
+--
 --  u_pal_rom: entity work.PAL_PROM
 --  port  map(
 --    CLK         => I_CLK_24576M,
@@ -464,7 +464,7 @@ begin
 --    ADDR        => R_AD(8 downto 0),
 --    DATA        => PAL_PROM_DO
 --    );
-
+--
 --  -- Changed to combinatorial, tiles glitch if registered!
 --  u_char_rom: entity work.CHAR_PROM
 --  port  map(
@@ -571,6 +571,7 @@ begin
 		O_SW2_OE_n		=> W_SW2_OEn,
 		O_SW3_OE_n		=> W_SW3_OEn,
 		O_DIP_OE_n		=> W_DIP_OEn,
+--	.O_4H_Q(W_4H_Q), -- dkj
 		O_5H_Q			=> W_5H_Q,
 		O_6H_Q			=> W_6H_Q,
 		O_3D_Q			=> W_3D_Q
@@ -619,7 +620,7 @@ begin
 	);
 
 	-- V-RAM (VIDEO)
-	vram : entity work.dkong_vram
+	vram : dkong_vram -- entity work.dkong_vram
 	port map (
 		-- input
 		CLK_12M			=> not W_CLK_12288M,
@@ -633,11 +634,14 @@ begin
 		I_CMPBLK			=> W_C_BLANKn,
 		O_VRAM_AB		=> VID_ROM_A,
 		I_VRAM_D1		=> VID_ROM1_DO,
-		I_VRAM_D2		=> VID_ROM2_3N_DO,
+		I_VRAM_D2		=> VID_ROM2_DO,
+
 --		I_CNF_EN			=> W_CNF_EN,
 --		I_CNF_A			=> R_AD(7 downto 0),
 --		I_CNF_D			=> CHAR_PROM_DO,
 --		I_WE4				=> W_W4_WE,
+
+--	.I_4H_Q0(W_4H_Q[0]), -- dkj
 		--  Debug output
 		O_DB				=> W_VRAM_DB,
 		O_COL				=> W_VRAM_COL,
@@ -728,7 +732,8 @@ begin
 --		I_CNF_EN			=> '0', -- W_CNF_EN,
 
 		I_SOUND_DAT		=> W_3D_Q,
-		I_SOUND_CNT		=> W_SOUND_CNT,
+--	W_SOUND_CNT		<= W_6H_Q(5 downto 3) & W_5H_Q(0); 
+		I_SOUND_CNT		=> W_SOUND_CNT, -- 	.I_SOUND_CNT( { W_4H_Q[1], W_6H_Q[6:3], W_5H_Q[0] } ),
 		O_SOUND_DAT		=> W_D_S_DAT
 	);
 
