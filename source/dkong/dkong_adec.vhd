@@ -38,6 +38,7 @@ entity dkong_adec is
 		O_NMI_n			: out std_logic;
 		O_ROM_CS_n		: out std_logic;								-- 0000 H - 3FFF H  (5E,5C,5B,5A)
 		O_RAM1_CS_n		: out std_logic;								-- 6000 H - 67FF H  (3B,3C,4B,4C)
+		O_RAM2_CS_n		: out std_logic;								-- 6400 H - 67FF H  (3B,4B)
 		O_RAM3_CS_n		: out std_logic;								-- 6800 H - 6BFF H  (3A,4A)
 		O_DMA_CS_n		: out std_logic;								-- 7800 H - 783F H  (DMA)
 		O_OBJ_RQ_n		: out std_logic;								-- 7000 H - 73FF H
@@ -71,7 +72,8 @@ begin
 
 	O_ROM_CS_n	<= '0' when I_RFSH_n = '1' and I_AB(15 downto 14) = "00" else '1'; -- 0000H - 3FFFH
 
-	O_RAM1_CS_n <= '0' when (I_WR_n = '0' or I_RD_n = '0') and I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 11) = "01100"  else '1'; -- 6000H - 67FFh (RW)
+	O_RAM1_CS_n <= '0' when (I_WR_n = '0' or I_RD_n = '0') and I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 10) = "011000" else '1'; -- 6000H - 63FFh (RW)
+	O_RAM2_CS_n <= '0' when (I_WR_n = '0' or I_RD_n = '0') and I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 10) = "011001" else '1'; -- 6400H - 67FFh (RW)
 	O_RAM3_CS_n <= '0' when (I_WR_n = '0' or I_RD_n = '0') and I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 10) = "011010" else '1'; -- 6800H - 6BFFh (RW)
 
 	O_OBJ_RQ_n	<= '0' when I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 10) = "011100" else '1'; -- 7000H - 73FFh

@@ -85,24 +85,11 @@ $ROMGEN/romgen $BUILD/cpu_rom_5800.bin CPU_ROM_5800 11 l r e > $BUILD/cpu_rom_58
 
 
 # GFX2 (AxxxH, BxxxH, CxxxH, DxxxH of SRAM)
-#$ROMGEN/romgen $ROMS/l_4m_b.bin OBJ_ROM_1 11 l r e > $BUILD/obj_rom_1.vhd
-#$ROMGEN/romgen $ROMS/l_4n_b.bin OBJ_ROM_2 11 l r e > $BUILD/obj_rom_2.vhd
-#$ROMGEN/romgen $ROMS/l_4r_b.bin OBJ_ROM_3 11 l r e > $BUILD/obj_rom_3.vhd
-#$ROMGEN/romgen $ROMS/l_4s_b.bin OBJ_ROM_4 11 l r e > $BUILD/obj_rom_4.vhd
 $ROMGEN/romgen $ROMS/v_7c.bin OBJ_ROM_1 11 l r e > $BUILD/obj_rom_1.vhd
 $ROMGEN/romgen $ROMS/v_7d.bin OBJ_ROM_2 11 l r e > $BUILD/obj_rom_2.vhd
 $ROMGEN/romgen $ROMS/v_7e.bin OBJ_ROM_3 11 l r e > $BUILD/obj_rom_3.vhd
 $ROMGEN/romgen $ROMS/v_7f.bin OBJ_ROM_4 11 l r e > $BUILD/obj_rom_4.vhd
 
-
-#	ROM_REGION( 0x1000, REGION_GFX1, ROMREGION_DISPOSE )
-#	ROM_LOAD( "v_5h_b.bin",   0x0000, 0x0800, CRC(12c8c95d) SHA1(a57ff5a231c45252a63b354137c920a1379b70a3) )
-#	ROM_LOAD( "v_3pt.bin",    0x0800, 0x0800, CRC(15e9c5e9) SHA1(976eb1e18c74018193a35aa86cff482ebfc5cc4e) )
-
-# GFX1 (6xxxH of SRAM)
-# $ROMGEN/romgen $ROMS/v_3pt.bin  VID_ROM_1 11 l r e > $BUILD/vid_rom_1.vhd
-# GFX1 (7xxxH of SRAM)
-# $ROMGEN/romgen $ROMS/v_5h_b.bin VID_ROM_2 11 l r e > $BUILD/vid_rom_2.vhd
 
 #	ROM_REGION( 0x2000, REGION_GFX1, ROMREGION_DISPOSE )
 #	ROM_LOAD( "dkj.3n",       0x0000, 0x1000, CRC(8d51aca9) SHA1(64887564b079d98e98aafa53835e398f34fe4e3f) )
@@ -114,11 +101,8 @@ $ROMGEN/romgen $ROMS/dkj.3p  VID_ROM_1 12 l r e > $BUILD/vid_rom_1.vhd
 $ROMGEN/romgen $ROMS/dkj.3n  VID_ROM_2 12 l r e > $BUILD/vid_rom_2.vhd
 
 
-
 # sound PROMs (ExxxH of SRAM)
-#cat $ROMS/s_3i_b.bin $ROMS/s_3j_b.bin  > $BUILD/snd_prom.bin
-cat $ROMS/c_3h.bin  > $BUILD/snd_prom.bin
-$ROMGEN/romgen $BUILD/snd_prom.bin SND_PROM 12 l r e  > $BUILD/snd_prom.vhd
+$ROMGEN/romgen $ROMS/c_3h.bin SND_PROM 12 l r e  > $BUILD/snd_prom.vhd
 
 # palette PROMs (F0xxH, F1xxH of SRAM)
 $ROMGEN/romgen $ROMS/c-2e.bpr PAL_PROM_2E 8 c   > $BUILD/pal_prom_2E.vhd
@@ -126,7 +110,6 @@ $ROMGEN/romgen $ROMS/c-2f.bpr PAL_PROM_2F 8 c   > $BUILD/pal_prom_2F.vhd
 
 
 # character PROMs (F2xxH of SRAM) Changed to combinatorial, tiles glitch if registered! 
-#$ROMGEN/romgen $ROMS/v-5e.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
 $ROMGEN/romgen $ROMS/v-2n.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
 
 # Extract [0x0000, 0x5000) from the sample blob. 
