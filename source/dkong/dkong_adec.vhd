@@ -70,7 +70,13 @@ begin
 	O_WAIT_n		<= W_7F1_Qn;
 	W_VBLK		<= not I_VBLK_n;
 
-	O_ROM_CS_n	<= '0' when I_RFSH_n = '1' and I_AB(15 downto 14) = "00" else '1'; -- 0000H - 3FFFH
+    -- Address decoder at 4D is a '138 on Donkey Kong.
+    -- On DKjr 4D is a custom IC designated '3192' and does descrambling of 0x1000 segments.
+    -- discussed here: https://forums.arcade-museum.com/threads/donkey-kong-jr-custom-address-decoder-question.525387/
+    -- GAL image here: https://wiki.pldarchive.co.uk/index.php?title=Donkey_Kong_Jr._(bootleg)
+--	O_ROM_CS_n	<= '0' when I_RFSH_n = '1' and I_AB(15 downto 14) = "00" else '1'; -- 0000H - 3FFFH
+	O_ROM_CS_n	<= '0' when I_RFSH_n = '1' and 
+	               (I_AB(15 downto 13) = "000" or I_AB(15 downto 13) = "001" or I_AB(15 downto 13) = "010"  ) else '1'; -- 0000H - 5FFFH (4000H - 5FFFH dkongjr only)
 
 	O_RAM1_CS_n <= '0' when (I_WR_n = '0' or I_RD_n = '0') and I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 10) = "011000" else '1'; -- 6000H - 63FFh (RW)
 	O_RAM2_CS_n <= '0' when (I_WR_n = '0' or I_RD_n = '0') and I_MREQ_n = '0' and I_RFSH_n = '1' and I_AB(15 downto 10) = "011001" else '1'; -- 6400H - 67FFh (RW)
