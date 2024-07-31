@@ -102,37 +102,10 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/spartan/dkong_bram_if_xlinx.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../original_source/fpga_dkong_v400/dkong_prj/src/dkong/spartan/dkong_bram_if_xlinx.v"/>
-          <Attr Name="ImportTime" Val="1107860400"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/dkong/dkong_logic.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../../../original_source/fpga_dkong_v400/dkong_prj/src/dkong/dkong_logic.v"/>
           <Attr Name="ImportTime" Val="1077841460"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/dkong/dkong_sound.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../original_source/fpga_dkong_v400/dkong_prj/src/dkong/dkong_sound.v"/>
-          <Attr Name="ImportTime" Val="1107860400"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/dkong/dkong_vram.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../original_source/fpga_dkong_v400/dkong_prj/src/dkong/dkong_vram.v"/>
-          <Attr Name="ImportTime" Val="1107860400"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -169,6 +142,12 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../../source/t80/T80as.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/adec_intrf.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -342,6 +321,12 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/new/digital_sound_intrf.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/new/mmcm_24M.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -403,6 +388,12 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../../source/dkong/dkong_obj.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../source/dkong/dkong_vram.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -510,6 +501,12 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../../../source/dkong/dkong_sound.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../../../source/t48/dmem_ctrl.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -554,27 +551,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/rtl_top.vhd">
         <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../../source/dkong/dkong_vram.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../../source/dkong/dkong_adec.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../../source/dkong/dkong_sound.vhd">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
