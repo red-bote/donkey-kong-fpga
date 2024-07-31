@@ -45,6 +45,7 @@ entity dkong_vram is
 		O_VRAM_AB	: out std_logic_vector(11 downto 0);
 		I_VRAM_D1	: in  std_logic_vector( 7 downto 0);
 		I_VRAM_D2	: in  std_logic_vector( 7 downto 0);
+		I_4H_Q0		: in  std_logic;
 --		I_CNF_EN		: in  std_logic;
 --		I_CNF_A		: in  std_logic_vector( 7 downto 0);
 --		I_CNF_D		: in  std_logic_vector( 7 downto 0);
@@ -153,7 +154,8 @@ begin
 		end if;
 	end process;
 
-	O_VRAM_AB	<= '0' & WO_DB(7 downto 0) & I_VF_CNT(2 downto 0);
+--	O_VRAM_AB	<= '0' & WO_DB(7 downto 0) & I_VF_CNT(2 downto 0);
+	O_VRAM_AB	<= I_4H_Q0 & WO_DB(7 downto 0) & I_VF_CNT(2 downto 0); -- dkjr 
 	W_3P_DO		<= I_VRAM_D1;
 	W_3N_DO		<= I_VRAM_D2;
 	CLK_4PN		<= I_H_CNT(0);
