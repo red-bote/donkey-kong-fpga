@@ -47,7 +47,8 @@
 
 ROMS=../roms/dkongjr
 ROMGEN=../romgen_source
-BUILD=../build
+BUILD=../build/dkongjr
+[ ! -d $BUILD ] && mkdir $BUILD
 
 echo ---------- build PROM data ---------- 
 

@@ -186,7 +186,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/char_prom.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/char_prom.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -210,73 +210,73 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_0000.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_0000.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_0800.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_0800.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_1000.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_1000.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_1800.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_1800.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_2000.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_2000.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_2800.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_2800.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_3000.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_3000.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_3800.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_3800.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_4000.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_4000.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_4800.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_4800.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_5000.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_5000.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/cpu_rom_5800.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/cpu_rom_5800.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -342,37 +342,37 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/obj_rom_1.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/obj_rom_1.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/obj_rom_2.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/obj_rom_2.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/obj_rom_3.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/obj_rom_3.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/obj_rom_4.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/obj_rom_4.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/vid_rom_1.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/vid_rom_1.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/vid_rom_2.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/vid_rom_2.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -402,13 +402,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/pal_prom_2E.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/pal_prom_2E.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/pal_prom_2F.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/pal_prom_2F.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -444,31 +444,31 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/wav_snd_0.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/wav_snd_0.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/wav_snd_1.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/wav_snd_1.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/wav_snd_2.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/wav_snd_2.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/wav_snd_3.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/wav_snd_3.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/wav_snd_4.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/wav_snd_4.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -528,7 +528,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../build/snd_prom.vhd">
+      <File Path="$PPRDIR/../../../build/dkongjr/snd_prom.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
