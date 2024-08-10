@@ -541,7 +541,7 @@ begin
 		I_SW				=> W_6H_Q(2 downto 0)
 	);
 
-    u_wav_rom: entity work.dkwav_rom
+    u_wav_rom: entity work.samples_rom
     Port map (
         i_clk => I_CLK_24576M,
         i_addr => WAV_ROM_A(15 downto 0),

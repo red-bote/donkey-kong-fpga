@@ -474,7 +474,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/dkong.srcs/sources_1/new/dkwav_rom.vhd">
+      <File Path="$PSRCDIR/sources_1/new/samples_rom.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
