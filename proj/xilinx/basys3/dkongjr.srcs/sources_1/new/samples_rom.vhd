@@ -44,13 +44,14 @@ architecture RTL of samples_rom is
     signal data_2 : std_logic_vector(7 downto 0);
     signal data_3 : std_logic_vector(7 downto 0);
     signal data_4 : std_logic_vector(7 downto 0);
+    signal data_5 : std_logic_vector(7 downto 0);
 begin
 
   u_snd_0 : entity work.WAV_SND_0
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_0
     );
 
@@ -58,7 +59,7 @@ begin
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_1
     );
 
@@ -66,7 +67,7 @@ begin
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_2
     );
 
@@ -74,7 +75,7 @@ begin
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_3
     );
 
@@ -82,14 +83,23 @@ begin
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_4
     );
 
-  o_data <= data_0 when i_addr(14 downto 12) = "000" else
-            data_1 when i_addr(14 downto 12) = "001" else
-            data_2 when i_addr(14 downto 12) = "010" else
-            data_3 when i_addr(14 downto 12) = "011" else
-            data_4 ; -- when i_addr(14 downto 12) = "100"
+  u_snd_5 : entity work.WAV_SND_5
+  port map (
+    CLK         => i_clk,
+    ENA         => '1',
+    ADDR        => i_addr(12 downto 0),
+    DATA        => data_5
+    );
+
+  o_data <= data_0 when i_addr(15 downto 13) = "000" else
+            data_1 when i_addr(15 downto 13) = "001" else
+            data_2 when i_addr(15 downto 13) = "010" else
+            data_3 when i_addr(15 downto 13) = "011" else
+            data_4 when i_addr(15 downto 13) = "100" else
+            data_5 ; -- when i_addr(15 downto 13) = "101"
 
 end RTL;

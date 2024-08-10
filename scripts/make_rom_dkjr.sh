@@ -113,21 +113,21 @@ $ROMGEN/romgen $ROMS/c-2f.bpr PAL_PROM_2F 8 c   > $BUILD/pal_prom_2F.vhd
 # character PROMs (F2xxH of SRAM) Changed to combinatorial, tiles glitch if registered! 
 $ROMGEN/romgen $ROMS/v-2n.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
 
-# Extract [0x0000, 0x5000) from the sample blob. 
-# foot sound  [0x0000, 0x1000) 
-# jump sound  [0x1000, 0x3000)
-# stomp sound [0x3000, 0x5000)
-# data past 0x5000 does not appear to have been used.
-dd if=dk_wave.bin of=$BUILD/dk_wav0.bin bs=1 count=4096 skip=0
-$ROMGEN/romgen $BUILD/dk_wav0.bin WAV_SND_0 12 l r e > $BUILD/wav_snd_0.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav1.bin bs=1 count=4096 skip=4096
-$ROMGEN/romgen $BUILD/dk_wav1.bin WAV_SND_1 12 l r e > $BUILD/wav_snd_1.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav2.bin bs=1 count=4096 skip=8192
-$ROMGEN/romgen $BUILD/dk_wav2.bin WAV_SND_2 12 l r e > $BUILD/wav_snd_2.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav3.bin bs=1 count=4096 skip=12288
-$ROMGEN/romgen $BUILD/dk_wav3.bin WAV_SND_3 12 l r e > $BUILD/wav_snd_3.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav4.bin bs=1 count=4096 skip=16384
-$ROMGEN/romgen $BUILD/dk_wav4.bin WAV_SND_4 12 l r e > $BUILD/wav_snd_4.vhd
+# Break the sample blob into smaller chunks of BRAM. 
+WAV_BIN=dkj_wave_8bps.raw
+WAV_BIN=dk_wave.bin
+dd if=$WAV_BIN of=$BUILD/dk_wav0.bin bs=1 count=8192 skip=0
+$ROMGEN/romgen $BUILD/dk_wav0.bin WAV_SND_0 13 l r e > $BUILD/wav_snd_0.vhd
+dd if=$WAV_BIN of=$BUILD/dk_wav1.bin bs=1 count=8192 skip=8192
+$ROMGEN/romgen $BUILD/dk_wav1.bin WAV_SND_1 13 l r e > $BUILD/wav_snd_1.vhd
+dd if=$WAV_BIN of=$BUILD/dk_wav2.bin bs=1 count=8192 skip=16384
+$ROMGEN/romgen $BUILD/dk_wav2.bin WAV_SND_2 13 l r e > $BUILD/wav_snd_2.vhd
+dd if=$WAV_BIN of=$BUILD/dk_wav3.bin bs=1 count=8192 skip=24576
+$ROMGEN/romgen $BUILD/dk_wav3.bin WAV_SND_3 13 l r e > $BUILD/wav_snd_3.vhd
+dd if=$WAV_BIN of=$BUILD/dk_wav4.bin bs=1 count=8192 skip=32768
+$ROMGEN/romgen $BUILD/dk_wav4.bin WAV_SND_4 13 l r e > $BUILD/wav_snd_4.vhd
+dd if=$WAV_BIN of=$BUILD/dk_wav5.bin bs=1 count=8192 skip=40960
+$ROMGEN/romgen $BUILD/dk_wav5.bin WAV_SND_5 13 l r e > $BUILD/wav_snd_5.vhd
 
 echo Finished, now build bitstream.
 
