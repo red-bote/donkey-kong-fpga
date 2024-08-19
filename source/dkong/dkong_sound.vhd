@@ -2,6 +2,8 @@
 --
 -- Originally by Katsumi Degawa in Verilog
 --
+-- 2024 Red-Bote (Glenn Neidermeier) eliminate external memory copy and directly use BRAM.
+--
 --	This program is free software; you can redistribute it and/or modify it under
 --	the terms of the GNU General Public License version 3 or, at your option,
 --	any later version as published by the Free Software Foundation.
@@ -24,7 +26,7 @@ library unisim;
 entity dkong_sound is
 	port(
 		I_CLK1		: in  std_logic;
-		I_CLK2		: in  std_logic;
+		-- I_CLK2		: in  std_logic;
 		I_RST			: in  std_logic;
 		I8035_DBI	: in  std_logic_vector( 7 downto 0);
 		I8035_DBO	: out std_logic_vector( 7 downto 0);

@@ -2,6 +2,8 @@
 --
 -- Originally by Katsumi Degawa in Verilog
 --
+-- 2024 Red-Bote (Glenn Neidermeier) eliminate external memory copy and directly use BRAM.
+--
 --	This program is free software; you can redistribute it and/or modify it under
 --	the terms of the GNU General Public License version 3 or, at your option,
 --	any later version as published by the Free Software Foundation.
@@ -99,17 +101,17 @@ begin
 --		I_WEB						=> I_WE3,
 --		O_DB						=> W_2F_DO
 --	);
-    -- only 4-bits data are used 
+	-- only 4-bits data are used 
 	U2E : entity work.PAL_PROM_2E
 	port map (
-       ADDR => W_PAL_AB, -- PAL_AD,
-       DATA => W_2E_DO
+		ADDR => W_PAL_AB,
+		DATA => W_2E_DO
 	);
-    -- only 4-bits data are used 
+	-- only 4-bits data are used 
 	U2F : entity work.PAL_PROM_2F
 	port map (
-       ADDR => W_PAL_AB, -- PAL_AD,
-       DATA => W_2F_DO
+		ADDR => W_PAL_AB,
+		DATA => W_2F_DO
 	);
 
 	O_R(0) <= not W_2F_DO(3) when I_CMPBLKn = '1' else '0';

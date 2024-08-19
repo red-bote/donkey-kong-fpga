@@ -2,6 +2,8 @@
 --
 -- Originally by Katsumi Degawa in Verilog
 --
+-- 2024 Red-Bote (Glenn Neidermeier) eliminate copy from external memory and directly use BRAM.
+--
 --	This program is free software; you can redistribute it and/or modify it under
 --	the terms of the GNU General Public License version 3 or, at your option,
 --	any later version as published by the Free Software Foundation.

@@ -15,7 +15,7 @@
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
---   dkongjr_adec.v from https://github.com/MiSTer-devel/Arcade-DonkeyKongJunior_MiSTer
+--   See github.com/gaz68/Arcade-DonkeyKongJunior_MiSTer/blob/master/src/dkongjr_adec.v
 ----------------------------------------------------------------------------------
 
 

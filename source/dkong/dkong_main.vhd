@@ -150,7 +150,7 @@ architecture RTL of dkong_main is
 	signal dac_di				: std_logic_vector( 8 downto 0) := (others => '0');
 	signal rgb_in				: std_logic_vector(15 downto 0) := (others => '0');
 	signal rgb_out				: std_logic_vector(15 downto 0) := (others => '0');
-	signal sound_mix			: std_logic_vector( 8 downto 0) := (others => '0');
+--	signal sound_mix			: std_logic_vector( 8 downto 0) := (others => '0');
 
 begin
 	------- SW Interface --|---------------------------------------------------------
@@ -214,24 +214,9 @@ begin
 	rgb_in			<= x"00" & W_R & W_G & W_B;
 	W_OBJ_AB			<= W_H_CNT(8) & (not W_H_CNT(8)) & W_H_CNT(7 downto 0);
 	W_VRAM_DAT		<= W_VRAM_COL & W_VRAM_VID;
-	sound_mix		<= '0' & WAV_ROM_DO + W_D_S_DAT;
 
 --	W_SOUND_CNT		<= W_6H_Q(5 downto 3) & W_5H_Q(0); -- DK
 	W_SOUND_CNT  <= W_4H_Q(1) & W_6H_Q(6 downto 3) & W_5H_Q(0); -- dkjr expanded sound counter range
-
-	-- SOUND MIXER (WAV + DIG )
-	sound_mixer : process(W_CLK_12288M)
-	begin
-		if rising_edge(W_CLK_12288M) then
-			if (sound_mix >= "101111111") then		-- POS Limiter
-				dac_di <= "011111111";
-			elsif (sound_mix <= "010000000") then	-- NEG Limiter
-				dac_di <= (others => '0');
-			else
-				dac_di <= sound_mix - "010000000";
-			end if;
-		end if;
-	end process;
 
 
   u_cpu_rom : entity work.program_rom
@@ -531,22 +516,54 @@ begin
 		O_SOUND_DAT		=> W_D_S_DAT
 	);
 
-	analog_sound : entity work.dkong_wav_sound
+--	analog_sound : entity work.dkong_wav_sound
+--	port map (
+--		O_ROM_AB			=> WAV_ROM_A,
+--		I_ROM_DB			=> (others => '0'),
+
+--		I_CLK				=> I_CLK_24576M,
+--		I_RSTn			=> I_RESETn,
+--		I_SW				=> W_6H_Q(2 downto 0)
+--	);
+
+--    u_wav_rom: entity work.samples_rom
+--    Port map (
+--        i_clk => I_CLK_24576M,
+--        i_addr => WAV_ROM_A(15 downto 0),
+--        o_data => WAV_ROM_DO
+--    );
+
+--	sound_mix		<= '0' & WAV_ROM_DO + W_D_S_DAT;
+
+--	-- SOUND MIXER (WAV + DIG )
+--	sound_mixer : process(W_CLK_12288M)
+--	begin
+--		if rising_edge(W_CLK_12288M) then
+--			if (sound_mix >= "101111111") then		-- POS Limiter
+--				dac_di <= "011111111";
+--			elsif (sound_mix <= "010000000") then	-- NEG Limiter
+--				dac_di <= (others => '0');
+--			else
+--				dac_di <= sound_mix - "010000000";
+--			end if;
+--		end if;
+--	end process;
+
+	u_sound_mixer : entity work.sound_mix_intrf
 	port map (
-		O_ROM_AB			=> WAV_ROM_A,
-		I_ROM_DB			=> (others => '0'),
+		I_RESETn => I_RESETn,
+		I_CLK_24576M => I_CLK_24576M,
+		I_CLK_12288M => W_CLK_12288M,
 
-		I_CLK				=> I_CLK_24576M,
-		I_RSTn			=> I_RESETn,
-		I_SW				=> W_6H_Q(2 downto 0)
+		I8035_PBI => I8035_PBI, -- dkjr only
+		W_H_CNT => W_H_CNT, -- dkjr only
+		W_5H_Q => W_5H_Q, -- dkjr only
+
+		W_6H_Q => W_6H_Q,
+		W_D_S_DAT => W_D_S_DAT,
+
+		O_SOUND_MIX => dac_di
 	);
-
-    u_wav_rom: entity work.samples_rom
-    Port map (
-        i_clk => I_CLK_24576M,
-        i_addr => WAV_ROM_A(15 downto 0),
-        o_data => WAV_ROM_DO
-    );
 
 	-- D-A convertor
 	wav_dac : entity work.dac

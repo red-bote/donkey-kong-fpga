@@ -18,7 +18,10 @@
 // 2004- 9-14 T48-IP was changed to beta4.  K.Degawa
 // 2005- 2- 9 The description of the ROM was changed.
 //            Data on the ROM are initialized at the time of the start.   
-// 2024-July-30 Red~Bote (Glenn Neidermeier) eliminated RAM copy for Basys 3 project
+// 2024-July-30 Red~Bote (Glenn Neidermeier) 
+//              Modified from:
+//                github.com/gaz68/Arcade-DonkeyKongJunior_MiSTer/blob/master/src/dkongjr_sound.v
+//              Eliminated RAM copy for sound PROM
 //================================================================================
  
 module dkongjr_sound(
