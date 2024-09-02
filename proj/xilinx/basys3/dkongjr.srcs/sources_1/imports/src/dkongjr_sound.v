@@ -126,7 +126,7 @@ wire    [7:0]S_PROG_D  = I8035_PSENn ? 8'h00 : S_PROG_DB ;
 //);
 
 SND_PROM #()
-sound_rom_3H( I_CLK1, (1'b1), ROM_A, S_PROG_DB );
+  sound_rom_3H( I_CLK1, (1'b1), ROM_A, S_PROG_DB );
 
 
 //----  I8035_DB IO I/F -----------------------

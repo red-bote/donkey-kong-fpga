@@ -89,13 +89,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/dkong.srcs/sources_1/imports/dkong/dkong_logic.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PSRCDIR/sources_1/imports/src/dkongjr_adec.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer/src/dkongjr_adec.v"/>
@@ -107,7 +100,16 @@
       </File>
       <File Path="$PSRCDIR/sources_1/imports/src/dkongjr_iir_filter.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer/src/dkongjr_iir_filter.v"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer-gaz68/src/dkongjr_iir_filter.v"/>
+          <Attr Name="ImportTime" Val="1719084429"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/src/dkongjr_logic.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer-gaz68/src/dkongjr_logic.v"/>
           <Attr Name="ImportTime" Val="1719084429"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -125,14 +127,14 @@
       </File>
       <File Path="$PSRCDIR/sources_1/imports/src/dkongjr_wav_sound.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer/src/dkongjr_wav_sound.v"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer-gaz68/src/dkongjr_wav_sound.v"/>
           <Attr Name="ImportTime" Val="1719084429"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/sound_mix_dkj.v">
+      <File Path="$PSRCDIR/sources_1/new/sound_mixer.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -141,8 +143,6 @@
       </File>
       <File Path="$PSRCDIR/sources_1/imports/src/dkongjr_dac.sv">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../../../../tmp/Arcade-DonkeyKongJunior_MiSTer/src/dkongjr_dac.sv"/>
-          <Attr Name="ImportTime" Val="1719084429"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -179,12 +179,6 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../../source/t80/T80as.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/new/adec_intrf.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>

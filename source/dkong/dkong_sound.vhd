@@ -26,7 +26,6 @@ library unisim;
 entity dkong_sound is
 	port(
 		I_CLK1		: in  std_logic;
-		-- I_CLK2		: in  std_logic;
 		I_RST			: in  std_logic;
 		I8035_DBI	: in  std_logic_vector( 7 downto 0);
 		I8035_DBO	: out std_logic_vector( 7 downto 0);

@@ -114,8 +114,8 @@ $ROMGEN/romgen $ROMS/c-2f.bpr PAL_PROM_2F 8 c   > $BUILD/pal_prom_2F.vhd
 $ROMGEN/romgen $ROMS/v-2n.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
 
 # Break the sample blob into smaller chunks of BRAM. 
-# This is the sample file from 
-# github.com/gaz68/Arcade-DonkeyKongJunior_MiSTer/blob/master/releases/dkj_wave.bin
+# Based on the sample file from 
+#   github.com/gaz68/Arcade-DonkeyKongJunior_MiSTer/blob/master/releases/dkj_wave.bin
 # Data has been converted from signed 16-bit @11025 Hz to unsigned 8-bit @11025 Hz
 WAV_BIN=dkj_wave_8bps.raw
 dd if=$WAV_BIN of=$BUILD/dk_wav0.bin bs=1 count=8192 skip=0

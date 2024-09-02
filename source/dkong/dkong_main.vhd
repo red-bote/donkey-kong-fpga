@@ -2,6 +2,8 @@
 --
 -- Originally by Katsumi Degawa in Verilog
 --
+-- 2024 Red-Bote (Glenn Neidermeier) eliminate external memory copy and directly use BRAM.
+--
 --	This program is free software; you can redistribute it and/or modify it under
 --	the terms of the GNU General Public License version 3 or, at your option,
 --	any later version as published by the Free Software Foundation.
@@ -147,10 +149,46 @@ architecture RTL of dkong_main is
 	signal W_SOUND_CNT		: std_logic_vector( 5 downto 0) := (others => '0'); -- DK (3 downto 0)
 	signal W_CPU_DO			: std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_CPU_DI			: std_logic_vector( 7 downto 0) := (others => '0');
-	signal dac_di				: std_logic_vector( 8 downto 0) := (others => '0');
+	signal dac_di				: std_logic_vector( 7 downto 0) := (others => '0');
 	signal rgb_in				: std_logic_vector(15 downto 0) := (others => '0');
 	signal rgb_out				: std_logic_vector(15 downto 0) := (others => '0');
---	signal sound_mix			: std_logic_vector( 8 downto 0) := (others => '0');
+
+    component dkongjr_adec
+    port (
+        I_CLK12M        : in  std_logic;
+        I_CLK           : in  std_logic;
+        I_RESET_n       : in  std_logic;
+        I_AB            : in  std_logic_vector(15 downto 0);
+        I_DB            : in  std_logic_vector( 3 downto 0);
+        I_MREQ_n        : in  std_logic;
+        I_RFSH_n        : in  std_logic;
+        I_RD_n          : in  std_logic;
+        I_WR_n          : in  std_logic;
+        I_VRAMBUSY_n    : in  std_logic;
+        I_VBLK_n        : in  std_logic;
+        O_WAIT_n        : out std_logic;
+        O_NMI_n         : out std_logic;
+        O_ROM_CS_n      : out std_logic;                                -- 0000 H - 3FFF H  (5E,5C,5B,5A)
+        O_RAM1_CS_n     : out std_logic;                                -- 6000 H - 67FF H  (3B,3C,4B,4C)
+        O_RAM2_CS_n     : out std_logic;                                -- 6000 H - 67FF H  (3B,3C,4B,4C)
+        O_RAM3_CS_n     : out std_logic;                                -- 6800 H - 6BFF H  (3A,4A)
+        O_DMA_CS_n      : out std_logic;                                -- 7800 H - 783F H  (DMA)
+        O_6A_G_n        : out std_logic;                                -- 7000 H - 77FF H   => Active
+        O_OBJ_RQ_n      : out std_logic;                                -- 7000 H - 73FF H
+        O_OBJ_RD_n      : out std_logic;                                -- 7000 H - 73FF H  (R mode)
+        O_OBJ_WR_n      : out std_logic;                                -- 7000 H - 73FF H  (W mode)
+        O_VRAM_RD_n     : out std_logic;                                -- 7400 H - 77FF H  (R mode)
+        O_VRAM_WR_n     : out std_logic;                                -- 7400 H - 77FF H  (W mode)
+        O_SW1_OE_n      : out std_logic;                                -- 7C00 H           (R mode)
+        O_SW2_OE_n      : out std_logic;                                -- 7C80 H           (R mode)
+        O_SW3_OE_n      : out std_logic;                                -- 7D00 H           (R mode)
+        O_DIP_OE_n      : out std_logic;                                -- 7D80 H           (R mode)
+        O_4H_Q          : out std_logic_vector(1 downto 0);   -- GFX (Characters) bank switch, sound
+        O_5H_Q          : out std_logic_vector(7 downto 0);   -- FLIP,
+        O_6H_Q          : out std_logic_vector(7 downto 0);   -- sound
+        O_3D_Q          : out std_logic_vector(4 downto 0)    -- sound
+    );
+    end component;
 
 begin
 	------- SW Interface --|---------------------------------------------------------
@@ -343,7 +381,7 @@ begin
 	);
 
 	-- Address Decoder
-	adec : entity work.adec_intrf
+	adec : dkongjr_adec
 	port map (
 		I_CLK12M			=> W_CLK_12288M,
 		I_CLK				=> WB_CLK_03072M,
@@ -495,7 +533,7 @@ begin
 		O_P2				=> I8035_PBI
 	);
 
-	digital_sound : entity work.digital_sound_intrf
+	u_digital_sound : entity work.digital_sound_intrf
 	port map (
 		I_CLK1			=> W_CLK_12288M,
 		I_RST				=> I_RESETn,
@@ -515,39 +553,6 @@ begin
 		I_SOUND_CNT		=> W_SOUND_CNT,
 		O_SOUND_DAT		=> W_D_S_DAT
 	);
-
---	analog_sound : entity work.dkong_wav_sound
---	port map (
---		O_ROM_AB			=> WAV_ROM_A,
---		I_ROM_DB			=> (others => '0'),
-
---		I_CLK				=> I_CLK_24576M,
---		I_RSTn			=> I_RESETn,
---		I_SW				=> W_6H_Q(2 downto 0)
---	);
-
---    u_wav_rom: entity work.samples_rom
---    Port map (
---        i_clk => I_CLK_24576M,
---        i_addr => WAV_ROM_A(15 downto 0),
---        o_data => WAV_ROM_DO
---    );
-
---	sound_mix		<= '0' & WAV_ROM_DO + W_D_S_DAT;
-
---	-- SOUND MIXER (WAV + DIG )
---	sound_mixer : process(W_CLK_12288M)
---	begin
---		if rising_edge(W_CLK_12288M) then
---			if (sound_mix >= "101111111") then		-- POS Limiter
---				dac_di <= "011111111";
---			elsif (sound_mix <= "010000000") then	-- NEG Limiter
---				dac_di <= (others => '0');
---			else
---				dac_di <= sound_mix - "010000000";
---			end if;
---		end if;
---	end process;
 
 	u_sound_mixer : entity work.sound_mix_intrf
 	port map (

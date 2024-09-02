@@ -2,8 +2,6 @@
 # 6/12/2024 Glenn Neidermeier (Red~Bote)
 #  New generator for mapping images directly to VHDL on Basys 3 (no SRAM is used).
 
-
-#@echo off
 #rem
 #rem Donkey Kong ROM builder
 #rem
@@ -23,14 +21,6 @@
 #rem c2bdccbf2654b64ea55cd589fd21323a9178a660  v-5e.bpr
 #rem 976eb1e18c74018193a35aa86cff482ebfc5cc4e  v_3pt.bin
 #rem a57ff5a231c45252a63b354137c920a1379b70a3  v_5h_b.bin
-#
-#SET ROMS=..\roms
-#echo ---------- build PROM data ---------- 
-#copy /b %ROMS%\c_5et_g.bin + %ROMS%\c_5ct_g.bin + %ROMS%\c_5bt_g.bin + %ROMS%\c_5at_g.bin + %ROMS%\c_5at_g.bin + %ROMS%\c_5at_g.bin + %ROMS%\v_3pt.bin + %ROMS%\v_3pt.bin + %ROMS%\v_5h_b.bin + %ROMS%\v_5h_b.bin + %ROMS%\c_5at_g.bin + %ROMS%\c_5at_g.bin + %ROMS%\l_4m_b.bin + %ROMS%\l_4m_b.bin + %ROMS%\l_4n_b.bin + %ROMS%\l_4n_b.bin + %ROMS%\l_4r_b.bin + %ROMS%\l_4r_b.bin + %ROMS%\l_4s_b.bin + %ROMS%\l_4s_b.bin + %ROMS%\s_3i_b.bin + %ROMS%\s_3j_b.bin + %ROMS%\c-2k.bpr + %ROMS%\c-2j.bpr + %ROMS%\v-5e.bpr + 0xd00.bin + dk_wave.bin dkong_rom.bin
-#
-#rem ROM.vhd only used for simulation
-#genrom.py dkong_rom.bin ..\build\ROM.vhd
-
 
 ROMS=../roms/dkong
 ROMGEN=../romgen_source
@@ -40,26 +30,6 @@ BUILD=../build/dkong
 echo ---------- build PROM data ---------- 
 
 # CPU (at 0000H in SRAM)
-# cat $ROMS/c_5et_g.bin $ROMS/c_5ct_g.bin $ROMS/c_5bt_g.bin $ROMS/c_5at_g.bin  > $BUILD/cpu_rom.bin
-# $ROMGEN/romgen $BUILD/cpu_rom.bin CPU_ROM 14 l r e > $BUILD/cpu_rom.vhd
-
-
-##cat $ROMS/c_5et_g.bin  > $BUILD/cpu_rom_0.bin
-#dd bs=1 count=4096 skip=0  if=$ROMS/c_5et_g.bin  of=$BUILD/cpu_rom_0.bin
-#$ROMGEN/romgen $BUILD/cpu_rom_0.bin CPU_ROM_0 12 l r e > $BUILD/cpu_rom_0.vhd
-#
-##cat $ROMS/c_5ct_g.bin  > $BUILD/cpu_rom_1.bin
-#dd bs=1 count=4096 skip=0  if=$ROMS/c_5ct_g.bin  of=$BUILD/cpu_rom_1.bin
-#$ROMGEN/romgen $BUILD/cpu_rom_1.bin CPU_ROM_1 12 l r e > $BUILD/cpu_rom_1.vhd
-#
-##cat $ROMS/c_5bt_g.bin  > $BUILD/cpu_rom_2.bin
-#dd bs=1 count=4096 skip=0  if=$ROMS/c_5bt_g.bin of=$BUILD/cpu_rom_2.bin
-#$ROMGEN/romgen $BUILD/cpu_rom_2.bin CPU_ROM_2 12 l r e > $BUILD/cpu_rom_2.vhd
-#
-##cat $ROMS/c_5at_g.bin  > $BUILD/cpu_rom_3.bin
-#dd bs=1 count=4096 skip=0  if=$ROMS/c_5at_g.bin of=$BUILD/cpu_rom_3.bin
-#$ROMGEN/romgen $BUILD/cpu_rom_3.bin CPU_ROM_3 12 l r e > $BUILD/cpu_rom_3.vhd
-
 
 dd bs=1 count=2048 skip=0    if=$ROMS/c_5et_g.bin  of=$BUILD/cpu_rom_0000.bin
 $ROMGEN/romgen $BUILD/cpu_rom_0000.bin CPU_ROM_0000 11 l r e > $BUILD/cpu_rom_0000.vhd
@@ -81,7 +51,7 @@ $ROMGEN/romgen $BUILD/cpu_rom_3000.bin CPU_ROM_3000 11 l r e > $BUILD/cpu_rom_30
 dd bs=1 count=2048 skip=2048 if=$ROMS/c_5at_g.bin of=$BUILD/cpu_rom_3800.bin
 $ROMGEN/romgen $BUILD/cpu_rom_3800.bin CPU_ROM_3800 11 l r e > $BUILD/cpu_rom_3800.vhd
 
-#4000-5FFF not poulated on DK
+#4000-5FFF not poulated on DK, generate dummy ROM files so DK and DKjr have same CPU address space.
 dd bs=1 count=2048 skip=0    if=/dev/zero         of=$BUILD/cpu_rom_4000.bin
 $ROMGEN/romgen $BUILD/cpu_rom_4000.bin CPU_ROM_4000 11 l r e > $BUILD/cpu_rom_4000.vhd
 dd bs=1 count=2048 skip=2048 if=/dev/zero         of=$BUILD/cpu_rom_4800.bin
@@ -116,21 +86,14 @@ $ROMGEN/romgen $ROMS/c-2j.bpr PAL_PROM_2F 8 c   > $BUILD/pal_prom_2F.vhd
 # character PROMs (F2xxH of SRAM) Changed to combinatorial, tiles glitch if registered! 
 $ROMGEN/romgen $ROMS/v-5e.bpr CHAR_PROM 8 c   > $BUILD/char_prom.vhd
 
-# Extract [0x0000, 0x5000) from the sample blob. 
-# foot sound  [0x0000, 0x0FFF] 
-# jump sound  [0x1000, 0x2FFF]
-# stomp sound [0x3000, 0x4FFF]
-# gorilla grunt sound [0x5000,...] not used
-dd if=dk_wave.bin of=$BUILD/dk_wav0.bin bs=1 count=4096 skip=0
-$ROMGEN/romgen $BUILD/dk_wav0.bin WAV_SND_0 12 l r e > $BUILD/wav_snd_0.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav1.bin bs=1 count=4096 skip=4096
-$ROMGEN/romgen $BUILD/dk_wav1.bin WAV_SND_1 12 l r e > $BUILD/wav_snd_1.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav2.bin bs=1 count=4096 skip=8192
-$ROMGEN/romgen $BUILD/dk_wav2.bin WAV_SND_2 12 l r e > $BUILD/wav_snd_2.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav3.bin bs=1 count=4096 skip=12288
-$ROMGEN/romgen $BUILD/dk_wav3.bin WAV_SND_3 12 l r e > $BUILD/wav_snd_3.vhd
-dd if=dk_wave.bin of=$BUILD/dk_wav4.bin bs=1 count=4096 skip=16384
-$ROMGEN/romgen $BUILD/dk_wav4.bin WAV_SND_4 12 l r e > $BUILD/wav_snd_4.vhd
+# Break the sample blob into smaller chunks of BRAM
+WAV_FILE=dk_wave_new.raw
+dd if=$WAV_FILE of=$BUILD/dk_wav0.bin bs=1 count=8192 skip=0
+$ROMGEN/romgen $BUILD/dk_wav0.bin WAV_SND_0 13 l r e > $BUILD/wav_snd_0.vhd
+dd if=$WAV_FILE of=$BUILD/dk_wav1.bin bs=1 count=8192 skip=8192
+$ROMGEN/romgen $BUILD/dk_wav1.bin WAV_SND_1 13 l r e > $BUILD/wav_snd_1.vhd
+dd if=$WAV_FILE of=$BUILD/dk_wav2.bin bs=1 count=8192 skip=16384
+$ROMGEN/romgen $BUILD/dk_wav2.bin WAV_SND_2 13 l r e > $BUILD/wav_snd_2.vhd
 
 echo Finished, now build bitstream.
 

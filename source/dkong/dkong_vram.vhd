@@ -47,7 +47,7 @@ entity dkong_vram is
 		O_VRAM_AB	: out std_logic_vector(11 downto 0);
 		I_VRAM_D1	: in  std_logic_vector( 7 downto 0);
 		I_VRAM_D2	: in  std_logic_vector( 7 downto 0);
-		I_4H_Q0		: in  std_logic;
+		I_4H_Q0		: in  std_logic; -- forms 12-bit address for DKJR
 --		I_CNF_EN		: in  std_logic;
 --		I_CNF_A		: in  std_logic_vector( 7 downto 0);
 --		I_CNF_D		: in  std_logic_vector( 7 downto 0);
@@ -94,7 +94,7 @@ architecture RTL of dkong_vram is
 	signal I_4N			: std_logic_vector(7 downto 0) := (others => '0');
 	signal reg_4N		: std_logic_vector(7 downto 0) := (others => '0');
 
-	signal temp_vec8 : std_logic_vector(7 downto 0) := (others => '0');
+	signal U_2N_D8 : std_logic_vector(7 downto 0) := (others => '0');
 begin
 	---- Debug ----
 	---------------
@@ -141,12 +141,12 @@ begin
 --		O_D		=> W_2N_DO
 --	);
 	W_2N_AD <= W_vram_AB(9 downto 7) & W_vram_AB(4 downto 0);
-    U_2N: entity work.CHAR_PROM
-    port  map(
-        ADDR        => W_2N_AD,
-        DATA        => temp_vec8
-    );
-    W_2N_DO <= temp_vec8(3 downto 0);
+	U_2N: entity work.CHAR_PROM
+	port  map(
+		ADDR        => W_2N_AD,
+		DATA        => U_2N_D8
+	);
+	W_2N_DO <= U_2N_D8(3 downto 0);
 
 	--    Parts  2M
 	process(CLK_2M)

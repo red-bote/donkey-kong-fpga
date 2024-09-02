@@ -81,7 +81,8 @@ begin
 
 			// Prefetch sample.
 			if (I_H_CNT == {I_DMA_CHAN,1'b1}) begin
-				W_DMA_DATA <= I_DMA_DATA * W_VOL;
+//				W_DMA_DATA <= I_DMA_DATA * W_VOL;
+				W_DMA_DATA <= I_DMA_DATA * 9'sd128; // multiply a power-of-two avoids some DSP blocks
 			end
 			
 			sample <= (sample == I_DIV-1) ? 1'b0 : sample + 1'b1;

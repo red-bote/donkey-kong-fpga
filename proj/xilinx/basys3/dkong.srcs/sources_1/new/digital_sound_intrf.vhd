@@ -55,27 +55,6 @@ end digital_sound_intrf;
 
 architecture Behavioral of digital_sound_intrf is
 
---    component dkong_sound
---    port(
---        I_CLK1      : in  std_logic;
---        I_RST       : in  std_logic;
---        I8035_DBI   : in  std_logic_vector(7 downto 0);
---        I8035_DBO   : out std_logic_vector(7 downto 0);
---        I8035_PAI   : in  std_logic_vector(7 downto 0);
---        I8035_PBI   : in  std_logic_vector(7 downto 0);
---        I8035_PBO   : out std_logic_vector(7 downto 0);
---        I8035_ALE   : in  std_logic;
---        I8035_RDn   : in  std_logic;
---        I8035_PSENn : in  std_logic;
---        I8035_RSTn  : out std_logic;
---        I8035_INTn  : out std_logic;
---        I8035_T0    : out std_logic;
---        I8035_T1    : out std_logic;
---        I_SOUND_DAT : in  std_logic_vector(3 downto 0);
---        I_SOUND_CNT : in  std_logic_vector(3 downto 0);
---        O_SOUND_DAT : out std_logic_vector(7 downto 0)
---    );
---    end component;
 
 begin
 

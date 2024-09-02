@@ -39,8 +39,8 @@ O_ROM_CS_n,
 O_RAM1_CS_n,
 O_RAM2_CS_n,
 O_RAM3_CS_n,
-O_DMA_CS_n,
-O_6A_G_n,
+O_DMA_CS_n, // unused
+O_6A_G_n, // unused
 O_OBJ_RQ_n,
 O_OBJ_RD_n,
 O_OBJ_WR_n,

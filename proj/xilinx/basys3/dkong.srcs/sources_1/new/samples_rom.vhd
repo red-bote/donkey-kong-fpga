@@ -42,15 +42,13 @@ architecture RTL of samples_rom is
     signal data_0 : std_logic_vector(7 downto 0);
     signal data_1 : std_logic_vector(7 downto 0);
     signal data_2 : std_logic_vector(7 downto 0);
-    signal data_3 : std_logic_vector(7 downto 0);
-    signal data_4 : std_logic_vector(7 downto 0);
 begin
 
   u_snd_0 : entity work.WAV_SND_0
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_0
     );
 
@@ -58,7 +56,7 @@ begin
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_1
     );
 
@@ -66,30 +64,13 @@ begin
   port map (
     CLK         => i_clk,
     ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
+    ADDR        => i_addr(12 downto 0),
     DATA        => data_2
     );
 
-  u_snd_3 : entity work.WAV_SND_3
-  port map (
-    CLK         => i_clk,
-    ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
-    DATA        => data_3
-    );
-
-  u_snd_4 : entity work.WAV_SND_4
-  port map (
-    CLK         => i_clk,
-    ENA         => '1',
-    ADDR        => i_addr(11 downto 0),
-    DATA        => data_4
-    );
-
-  o_data <= data_0 when i_addr(14 downto 12) = "000" else
-            data_1 when i_addr(14 downto 12) = "001" else
-            data_2 when i_addr(14 downto 12) = "010" else
-            data_3 when i_addr(14 downto 12) = "011" else
-            data_4 ; -- when i_addr(14 downto 12) = "100"
+  o_data <= data_0 when i_addr(14 downto 13) = "00" else
+            data_1 when i_addr(14 downto 13) = "01" else
+            data_2; --  when i_addr(14 downto 13) = "10"
 
 end RTL;
+
