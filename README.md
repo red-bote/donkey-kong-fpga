@@ -7,11 +7,11 @@ Exported from https://code.google.com/archive/p/donkeykong-papilioplus-fpga
 
 6/12/2024 Glenn Neidermeier (Red~Bote):
 
-Basys 3 Artix-7 board supported on branch "Basys_3". Only Basys 3 supported on that 
-branch, it modifies dkong_main.vhd to eliminate the [bootstrap to SRAM](http://papilio.cc/index.php?n=Playground.Bootstrap) step since the 
-Basys 3 has adequate BRAM for program ROMs PROMs, and audio sample images.
+Basys 3 Artix-7 board supported on (the default) branch "Basys_3". Only Basys 3 supported on that branch, it modifies dkong_main.vhd to eliminate the [bootstrap to SRAM](https://github.com/d18c7db/fpga-sram-bootstrap) step, as the Basys 3 has adequate BRAM for program ROMs PROMs, and audio sample images.
 
-Quick start instructions:  
+Checkout the master branch to build for the Papilio Duo with Classic Computing shield (open project build/dkong_pduocs.xise). Building for Papilio (Spartan 6 fpga) requires installing Xilinx ISE WebPACK 14.7. See more at [Richard's Papilio DUO Blog](https://blog.rcook.org/blog/2019/papilio-duo-part-1/).
+
+Quick start instructions for Basys 3:
 
 Place ROMs in the roms directory, see `scripts/make_rom.sh` for a list of files required and SHA1 checksums  
 
